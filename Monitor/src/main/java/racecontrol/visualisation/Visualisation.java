@@ -5,20 +5,15 @@
  */
 package racecontrol.visualisation;
 
-import racecontrol.client.extension.AccClientExtension;
 import racecontrol.visualisation.components.BasePanel;
 import racecontrol.client.AccBroadcastingClient;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ServiceLoader;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import processing.core.PGraphics;
 import processing.core.PImage;
-import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
 
 /**
  * The base for the processing visualization.
@@ -38,18 +33,16 @@ public class Visualisation extends CustomPApplet {
     /**
      * Connection client.
      */
-    private final AccBroadcastingClient client;
+    private AccBroadcastingClient client;
     /**
      * The base panel to use.
      */
     private BasePanel basePanel;
+
     /**
      * Creates a new instance of this object.
-     *
-     * @param client The ACC client connection to use.
      */
-    public Visualisation(AccBroadcastingClient client) {
-        this.client = client;
+    public Visualisation() {
     }
 
     @Override
@@ -67,6 +60,9 @@ public class Visualisation extends CustomPApplet {
             surface.setIcon(i);
         }
         frameRate(30);
+
+        //create the connection client.
+        this.client = new AccBroadcastingClient();
 
         //init components.
         basePanel = new BasePanel(client);

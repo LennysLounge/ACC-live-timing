@@ -40,10 +40,6 @@ public class Main {
      * Connection client.
      */
     private static AccBroadcastingClient client;
-    /**
-     * Visualisation for this program.
-     */
-    private static Visualisation visualisation;
 
     public static void main(String[] args) throws InterruptedException {
         Thread.setDefaultUncaughtExceptionHandler(new UncoughtExceptionHandler());
@@ -62,12 +58,9 @@ public class Main {
                 | UnsupportedLookAndFeelException ex) {
             LOG.log(Level.WARNING, "Error setting system look and feel.", ex);
         }
-        //create a client and start visualisation.
-        client = new AccBroadcastingClient();
-        visualisation = new Visualisation(client);
-
+        //start visualisation.
         String[] a = {"MAIN"};
-        PApplet.runSketch(a, visualisation);
+        PApplet.runSketch(a, new Visualisation());
     }
 
     private static void setupSplash() {
