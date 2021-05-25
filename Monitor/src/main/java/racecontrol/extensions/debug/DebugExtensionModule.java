@@ -13,19 +13,14 @@ import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
  *
  * @author Leonard
  */
-public class DebugExtensionFactory
+public class DebugExtensionModule
         implements AccBroadcastingClientExtensionModule {
 
     private final DebugConfigPanel configPanel;
     private DebugExtension extension;
 
-    public DebugExtensionFactory() {
+    public DebugExtensionModule() {
         configPanel = new DebugConfigPanel();
-    }
-
-    @Override
-    public String getName() {
-        return "Debug";
     }
 
     @Override

@@ -3,9 +3,10 @@
  * 
  * For licensing information see the included license (LICENSE.txt)
  */
-package racecontrol.extensions.laptimes;
+package racecontrol.extensions.livetiming;
 
 import racecontrol.client.extension.AccClientExtension;
+import racecontrol.extensions.GeneralExtentionConfigPanel;
 import racecontrol.visualisation.gui.LPContainer;
 import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
 
@@ -13,20 +14,17 @@ import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
  *
  * @author Leonard
  */
-public class LaptimeExtensionFactory
+public class LiveTimingExtensionModule
         implements AccBroadcastingClientExtensionModule {
 
     private AccClientExtension extension;
 
     @Override
-    public String getName() {
-        return "Laptime extension";
-    }
-
-    @Override
     public AccClientExtension createExtension() {
         removeExtension();
-        extension = new LapTimeExtension(false);
+        if (GeneralExtentionConfigPanel.getInstance().isLiveTimingEnabled()) {
+            extension = new LiveTimingExtension();
+        }
         return extension;
     }
 

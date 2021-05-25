@@ -3,10 +3,9 @@
  * 
  * For licensing information see the included license (LICENSE.txt)
  */
-package racecontrol.extensions.logging;
+package racecontrol.extensions.replayoffset;
 
 import racecontrol.client.extension.AccClientExtension;
-import racecontrol.extensions.GeneralExtentionConfigPanel;
 import racecontrol.visualisation.gui.LPContainer;
 import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
 
@@ -14,22 +13,18 @@ import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
  *
  * @author Leonard
  */
-public class LoggingExtensionFactory
+public class ReplayOffsetExtensionModule
         implements AccBroadcastingClientExtensionModule {
 
-    private AccClientExtension extension;
+    private static ReplayOffsetExtension extension;
 
-    @Override
-    public String getName() {
-        return "Logging extension";
+    public ReplayOffsetExtensionModule() {
     }
 
     @Override
     public AccClientExtension createExtension() {
         removeExtension();
-        if (GeneralExtentionConfigPanel.getInstance().isLoggingEnabled()) {
-            extension = new LoggingExtension();
-        }
+        extension = new ReplayOffsetExtension();
         return extension;
     }
 

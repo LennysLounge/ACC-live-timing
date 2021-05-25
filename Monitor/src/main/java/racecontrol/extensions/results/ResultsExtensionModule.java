@@ -3,10 +3,9 @@
  * 
  * For licensing information see the included license (LICENSE.txt)
  */
-package racecontrol.extensions.velocitymap;
+package racecontrol.extensions.results;
 
 import racecontrol.client.extension.AccClientExtension;
-import racecontrol.extensions.GeneralExtentionConfigPanel;
 import racecontrol.visualisation.gui.LPContainer;
 import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
 
@@ -14,35 +13,28 @@ import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
  *
  * @author Leonard
  */
-public class VelocityMapExtensionFactory
+public class ResultsExtensionModule
         implements AccBroadcastingClientExtensionModule {
 
-    VelocityMapExtension extension;
-
-    @Override
-    public String getName() {
-        return "Velocity Map";
-    }
+    private AccClientExtension extension;
 
     @Override
     public AccClientExtension createExtension() {
         removeExtension();
-        if (GeneralExtentionConfigPanel.getInstance().isVelocityMapEnabled()) {
-            extension = new VelocityMapExtension();
-        }
+        extension = new ResultsExtension();
         return extension;
+    }
+
+    @Override
+    public LPContainer getExtensionConfigurationPanel() {
+        return null;
     }
 
     @Override
     public void removeExtension() {
         if (extension != null) {
             extension.removeExtension();
+            extension = null;
         }
-        extension = null;
-    }
-
-    @Override
-    public LPContainer getExtensionConfigurationPanel() {
-        return null;
     }
 }

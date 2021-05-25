@@ -380,7 +380,7 @@ public class AccBroadcastingClient {
 
     private void loadModules() {
         ServiceLoader.load(AccBroadcastingClientExtensionModule.class).forEach(module -> {
-            LOG.info("Loading extension " + module.getName());
+            LOG.info("Loading extension " + module.getClass().getSimpleName());
             extensionModules.add(module);
         });
     }

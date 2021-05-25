@@ -20,21 +20,15 @@ import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
  *
  * @author Leonard
  */
-public class GoogleSheetsAPIExtensionFactory
+public class GoogleSheetsAPIExtensionModule
         implements AccBroadcastingClientExtensionModule {
 
-    private static final Logger LOG = Logger.getLogger(GoogleSheetsAPIExtensionFactory.class.getName());
+    private static final Logger LOG = Logger.getLogger(GoogleSheetsAPIExtensionModule.class.getName());
 
     private GoogleSheetsAPIConfigurationPanel configurationPanel;
     private GoogleSheetsAPIExtension extension;
 
-    public GoogleSheetsAPIExtensionFactory() {
-
-    }
-
-    @Override
-    public String getName() {
-        return "Google Sheets API extension";
+    public GoogleSheetsAPIExtensionModule() {
     }
 
     @Override

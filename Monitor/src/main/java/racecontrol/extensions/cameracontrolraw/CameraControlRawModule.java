@@ -3,7 +3,7 @@
  * 
  * For licensing information see the included license (LICENSE.txt)
  */
-package racecontrol.extensions.livetiming;
+package racecontrol.extensions.cameracontrolraw;
 
 import racecontrol.client.extension.AccClientExtension;
 import racecontrol.extensions.GeneralExtentionConfigPanel;
@@ -14,28 +14,18 @@ import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
  *
  * @author Leonard
  */
-public class LiveTimingExtensionFactory
+public class CameraControlRawModule
         implements AccBroadcastingClientExtensionModule {
 
-    private AccClientExtension extension;
-
-    @Override
-    public String getName() {
-        return "Live Timing Extension";
-    }
+    CameraControlRawExtension extension;
 
     @Override
     public AccClientExtension createExtension() {
         removeExtension();
-        if (GeneralExtentionConfigPanel.getInstance().isLiveTimingEnabled()) {
-            extension = new LiveTimingExtension();
+        if (GeneralExtentionConfigPanel.getInstance().isCameraControlsEnabled()) {
+            extension = new CameraControlRawExtension();
         }
         return extension;
-    }
-
-    @Override
-    public LPContainer getExtensionConfigurationPanel() {
-        return null;
     }
 
     @Override
@@ -44,5 +34,10 @@ public class LiveTimingExtensionFactory
             extension.removeExtension();
             extension = null;
         }
+    }
+
+    @Override
+    public LPContainer getExtensionConfigurationPanel() {
+        return null;
     }
 }

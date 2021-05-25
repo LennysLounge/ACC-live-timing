@@ -5,6 +5,7 @@
  */
 package racecontrol.extensions.incidents;
 
+import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
 import racecontrol.client.extension.AccClientExtension;
 import racecontrol.visualisation.gui.LPContainer;
 
@@ -12,15 +13,10 @@ import racecontrol.visualisation.gui.LPContainer;
  *
  * @author Leonard
  */
-public class IncidentExtensionFactory
-        implements racecontrol.client.extension.AccBroadcastingClientExtensionModule {
+public class IncidentExtensionModule
+        implements AccBroadcastingClientExtensionModule {
 
     private IncidentExtension extension;
-
-    @Override
-    public String getName() {
-        return "Incident extension";
-    }
 
     @Override
     public AccClientExtension createExtension() {

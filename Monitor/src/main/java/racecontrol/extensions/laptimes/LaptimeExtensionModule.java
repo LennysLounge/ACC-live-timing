@@ -3,10 +3,9 @@
  * 
  * For licensing information see the included license (LICENSE.txt)
  */
-package racecontrol.extensions.cameracontrolraw;
+package racecontrol.extensions.laptimes;
 
 import racecontrol.client.extension.AccClientExtension;
-import racecontrol.extensions.GeneralExtentionConfigPanel;
 import racecontrol.visualisation.gui.LPContainer;
 import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
 
@@ -14,23 +13,21 @@ import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
  *
  * @author Leonard
  */
-public class CameraControlRawFactory
+public class LaptimeExtensionModule
         implements AccBroadcastingClientExtensionModule {
 
-    CameraControlRawExtension extension;
-
-    @Override
-    public String getName() {
-        return "Camera Controls";
-    }
+    private AccClientExtension extension;
 
     @Override
     public AccClientExtension createExtension() {
         removeExtension();
-        if (GeneralExtentionConfigPanel.getInstance().isCameraControlsEnabled()) {
-            extension = new CameraControlRawExtension();
-        }
+        extension = new LapTimeExtension(false);
         return extension;
+    }
+
+    @Override
+    public LPContainer getExtensionConfigurationPanel() {
+        return null;
     }
 
     @Override
@@ -39,10 +36,5 @@ public class CameraControlRawFactory
             extension.removeExtension();
             extension = null;
         }
-    }
-
-    @Override
-    public LPContainer getExtensionConfigurationPanel() {
-        return null;
     }
 }

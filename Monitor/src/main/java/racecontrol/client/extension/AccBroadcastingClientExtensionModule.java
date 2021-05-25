@@ -12,14 +12,7 @@ import racecontrol.visualisation.gui.LPContainer;
  * @author Leonard
  */
 public interface AccBroadcastingClientExtensionModule {
-
-    /**
-     * Returns the name for this extension.
-     *
-     * @return The name.
-     */
-    public String getName();
-
+    
     /**
      * Creates the client extension.
      * @return the created extension.
