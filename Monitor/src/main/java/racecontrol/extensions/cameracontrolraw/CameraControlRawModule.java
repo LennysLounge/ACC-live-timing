@@ -5,6 +5,7 @@
  */
 package racecontrol.extensions.cameracontrolraw;
 
+import racecontrol.client.AccBroadcastingClient;
 import racecontrol.client.extension.AccClientExtension;
 import racecontrol.extensions.GeneralExtentionConfigPanel;
 import racecontrol.visualisation.gui.LPContainer;
@@ -23,8 +24,8 @@ public class CameraControlRawModule
     }
 
     @Override
-    public AccClientExtension createExtension() {
-        return new CameraControlRawExtension();
+    public AccClientExtension createExtension(AccBroadcastingClient client) {
+        return new CameraControlRawExtension(client);
     }
 
     @Override

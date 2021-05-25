@@ -9,13 +9,14 @@ import racecontrol.client.extension.AccClientExtension;
 import racecontrol.visualisation.gui.LPContainer;
 import java.util.LinkedList;
 import java.util.List;
+import racecontrol.client.AccBroadcastingClient;
 
 /**
  *
  * @author Leonard
  */
 public class LoggingExtension
-        implements AccClientExtension {
+        extends AccClientExtension {
 
     /**
      * Table model for the logging extension.
@@ -29,7 +30,8 @@ public class LoggingExtension
 
     private static LPContainer panel;
 
-    public LoggingExtension() {
+    public LoggingExtension(AccBroadcastingClient client) {
+        super(client);
         this.panel = new LoggingPanel(this);
     }
 

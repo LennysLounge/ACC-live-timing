@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
+import racecontrol.client.AccBroadcastingClient;
 import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
 
 /**
@@ -37,7 +38,7 @@ public class GoogleSheetsAPIExtensionModule
     }
 
     @Override
-    public AccClientExtension createExtension() {
+    public AccClientExtension createExtension(AccBroadcastingClient client) {
         GoogleSheetsAPIExtension extension = null;
         //save the credentals file path
         PersistantConfig.setConfig(CREDENTIALS_FILE_PATH, configurationPanel.getCredentialsPath());
@@ -45,6 +46,7 @@ public class GoogleSheetsAPIExtensionModule
         //create extension.
         try {
             GoogleSheetsAPIExtension e = new GoogleSheetsAPIExtension(
+                    client,
                     new GoogleSheetsService(configurationPanel.getSpreadSheetLink(),
                             configurationPanel.getCredentialsPath()
                     ));
@@ -76,7 +78,7 @@ public class GoogleSheetsAPIExtensionModule
     public LPContainer getExtensionConfigurationPanel() {
         return configurationPanel;
     }
-    
+
     @Override
     public Class getExtensionClass() {
         return GoogleSheetsAPIExtension.class;

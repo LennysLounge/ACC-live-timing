@@ -5,6 +5,7 @@
  */
 package racecontrol.client.extension;
 
+import racecontrol.client.AccBroadcastingClient;
 import racecontrol.visualisation.gui.LPContainer;
 
 /**
@@ -12,18 +13,21 @@ import racecontrol.visualisation.gui.LPContainer;
  * @author Leonard
  */
 public interface AccBroadcastingClientExtensionModule {
-    
+
     /**
      * Returns true if the extension is enabled.
+     *
      * @return true if the extension is enabled.
      */
     public boolean isEnabled();
-    
+
     /**
      * Creates the client extension.
+     *
+     * @param client Reference to the client.
      * @return the created extension.
      */
-    public AccClientExtension createExtension();
+    public AccClientExtension createExtension(AccBroadcastingClient client);
 
     /**
      * Gives the configuration dialog panel for this extension. Returns null if
@@ -32,9 +36,10 @@ public interface AccBroadcastingClientExtensionModule {
      * @return
      */
     public LPContainer getExtensionConfigurationPanel();
-    
+
     /**
      * Returns the class of the extentsion that this module creates.
+     *
      * @return The class of the extension.
      */
     public Class getExtensionClass();

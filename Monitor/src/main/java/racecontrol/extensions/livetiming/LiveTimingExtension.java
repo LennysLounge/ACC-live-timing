@@ -8,7 +8,6 @@ package racecontrol.extensions.livetiming;
 import racecontrol.extensions.livetiming.tablemodels.RaceTableModel;
 import racecontrol.extensions.livetiming.tablemodels.LiveTimingTableModel;
 import racecontrol.extensions.livetiming.tablemodels.QualifyingTableModel;
-import racecontrol.Main;
 import racecontrol.client.events.RealtimeCarUpdate;
 import racecontrol.client.events.RealtimeUpdate;
 import racecontrol.eventbus.Event;
@@ -41,16 +40,13 @@ import java.util.stream.Collectors;
  * @author Leonard
  */
 public class LiveTimingExtension
-        implements EventListener, AccClientExtension {
+        extends AccClientExtension
+        implements EventListener {
 
     /**
      * This classes logger.
      */
     private static Logger LOG = Logger.getLogger(LiveTimingExtension.class.getName());
-    /**
-     * Reference to the client.
-     */
-    private final AccBroadcastingClient client;
     /**
      * The visualisation panel
      */
@@ -76,8 +72,8 @@ public class LiveTimingExtension
      */
     private GapCalculator gapCalculator = new GapCalculator();
 
-    public LiveTimingExtension() {
-        this.client = Main.getClient();
+    public LiveTimingExtension(AccBroadcastingClient client) {
+        super(client);
         this.panel = new LiveTimingPanel(this);
 
         EventBus.register(this);
@@ -196,7 +192,7 @@ public class LiveTimingExtension
 
     public void onRealtimeCarUpdate(RealtimeCarUpdate event) {
         RealtimeInfo info = event.getInfo();
-        CarInfo car = client.getModel().getCarsInfo().get(info.getCarId());
+        CarInfo car = getClient().getModel().getCarsInfo().get(info.getCarId());
         if (car != null) {
             entries.put(car.getCarId(), new LiveTimingEntry(car));
         }
@@ -215,11 +211,11 @@ public class LiveTimingExtension
     }
 
     public void focusOnCar(CarInfo car) {
-        client.sendChangeFocusRequest(car.getCarId());
+        getClient().sendChangeFocusRequest(car.getCarId());
     }
 
     private boolean isFocused(CarInfo car) {
-        return car.getCarId() == client.getModel().getSessionInfo().getFocusedCarIndex();
+        return car.getCarId() == getClient().getModel().getSessionInfo().getFocusedCarIndex();
     }
 
 }

@@ -5,6 +5,7 @@
  */
 package racecontrol.extensions.incidents;
 
+import racecontrol.client.AccBroadcastingClient;
 import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
 import racecontrol.client.extension.AccClientExtension;
 import racecontrol.visualisation.gui.LPContainer;
@@ -22,8 +23,8 @@ public class IncidentExtensionModule
     }
 
     @Override
-    public AccClientExtension createExtension() {
-        return new IncidentExtension();
+    public AccClientExtension createExtension(AccBroadcastingClient client) {
+        return new IncidentExtension(client);
     }
 
     @Override

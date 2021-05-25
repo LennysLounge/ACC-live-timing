@@ -5,6 +5,7 @@
  */
 package racecontrol.extensions.debug;
 
+import racecontrol.client.AccBroadcastingClient;
 import racecontrol.client.extension.AccClientExtension;
 import racecontrol.visualisation.gui.LPContainer;
 import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
@@ -28,15 +29,15 @@ public class DebugExtensionModule
     }
 
     @Override
-    public AccClientExtension createExtension() {
-        return new DebugExtension();
+    public AccClientExtension createExtension(AccBroadcastingClient client) {
+        return new DebugExtension(client);
     }
 
     @Override
     public LPContainer getExtensionConfigurationPanel() {
         return configPanel;
     }
-    
+
     @Override
     public Class getExtensionClass() {
         return DebugExtension.class;

@@ -41,7 +41,8 @@ import java.util.stream.Collectors;
  * @author Leonard
  */
 public class GoogleSheetsAPIExtension
-        implements EventListener, AccClientExtension {
+        extends AccClientExtension
+        implements EventListener {
 
     private static final Logger LOG = Logger.getLogger(GoogleSheetsAPIExtension.class.getName());
 
@@ -75,8 +76,6 @@ public class GoogleSheetsAPIExtension
 
     private final GoogleSheetsAPIPanel panel;
 
-    private final AccBroadcastingClient client;
-
     private String findEmptyRowRange = GoogleSheetsAPIConfigurationPanel.FIND_EMPTY_ROW_RANGE;
     private String replayOffsetCell = GoogleSheetsAPIConfigurationPanel.REPLAY_OFFSET_CELL;
     private String sessionColumn = GoogleSheetsAPIConfigurationPanel.SESSION_TIME_COLUMN;
@@ -86,10 +85,11 @@ public class GoogleSheetsAPIExtension
      */
     private final List<CarInfo> carConnections = new LinkedList<>();
 
-    public GoogleSheetsAPIExtension(GoogleSheetsService service) {
+    public GoogleSheetsAPIExtension(AccBroadcastingClient client,
+            GoogleSheetsService service) {
+        super(client);
         EventBus.register(this);
         panel = new GoogleSheetsAPIPanel(this);
-        client = Main.getClient();
         this.sheetService = service;
     }
 
@@ -159,7 +159,7 @@ public class GoogleSheetsAPIExtension
 
     public void sendEmptyIncident() {
         queue.add(new SendIncidentEvent(
-                TimeUtils.asDuration(client.getModel().getSessionInfo().getSessionTime()),
+                TimeUtils.asDuration(getClient().getModel().getSessionInfo().getSessionTime()),
                 "empty")
         );
     }

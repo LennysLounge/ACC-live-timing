@@ -5,6 +5,7 @@
  */
 package racecontrol.extensions.velocitymap;
 
+import racecontrol.client.AccBroadcastingClient;
 import racecontrol.client.extension.AccClientExtension;
 import racecontrol.extensions.GeneralExtentionConfigPanel;
 import racecontrol.visualisation.gui.LPContainer;
@@ -23,15 +24,15 @@ public class VelocityMapExtensionModule
     }
 
     @Override
-    public AccClientExtension createExtension() {
-        return new VelocityMapExtension();
+    public AccClientExtension createExtension(AccBroadcastingClient client) {
+        return new VelocityMapExtension(client);
     }
 
     @Override
     public LPContainer getExtensionConfigurationPanel() {
         return null;
     }
-    
+
     @Override
     public Class getExtensionClass() {
         return VelocityMapExtension.class;

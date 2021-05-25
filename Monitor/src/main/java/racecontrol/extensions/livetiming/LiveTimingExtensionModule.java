@@ -5,6 +5,7 @@
  */
 package racecontrol.extensions.livetiming;
 
+import racecontrol.client.AccBroadcastingClient;
 import racecontrol.client.extension.AccClientExtension;
 import racecontrol.extensions.GeneralExtentionConfigPanel;
 import racecontrol.visualisation.gui.LPContainer;
@@ -23,8 +24,8 @@ public class LiveTimingExtensionModule
     }
 
     @Override
-    public AccClientExtension createExtension() {
-        return new LiveTimingExtension();
+    public AccClientExtension createExtension(AccBroadcastingClient client) {
+        return new LiveTimingExtension(client);
     }
 
     @Override

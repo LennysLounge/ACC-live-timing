@@ -383,7 +383,7 @@ public class AccBroadcastingClient {
 
             extensionModules.stream()
                     .filter(module -> module.getExtensionClass() == clazz)
-                    .forEach(module -> extensions.put(clazz, module.createExtension()));
+                    .forEach(module -> extensions.put(clazz, module.createExtension(this)));
 
             circularDependencyPrevention.remove(clazz);
         }

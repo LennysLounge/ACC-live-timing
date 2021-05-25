@@ -5,6 +5,7 @@
  */
 package racecontrol.extensions.results;
 
+import racecontrol.client.AccBroadcastingClient;
 import racecontrol.client.extension.AccClientExtension;
 import racecontrol.visualisation.gui.LPContainer;
 import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
@@ -22,8 +23,8 @@ public class ResultsExtensionModule
     }
 
     @Override
-    public AccClientExtension createExtension() {
-        return new ResultsExtension();
+    public AccClientExtension createExtension(AccBroadcastingClient client) {
+        return new ResultsExtension(client);
     }
 
     @Override

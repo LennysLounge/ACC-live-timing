@@ -5,31 +5,32 @@
  */
 package racecontrol.extensions.cameracontrolraw;
 
-import racecontrol.Main;
 import racecontrol.eventbus.Event;
 import racecontrol.eventbus.EventBus;
 import racecontrol.eventbus.EventListener;
 import racecontrol.client.extension.AccClientExtension;
-import racecontrol.client.AccBroadcastingClient;
 import racecontrol.client.events.RealtimeUpdate;
 import racecontrol.client.data.SessionInfo;
 import racecontrol.client.data.TrackInfo;
 import racecontrol.client.events.TrackData;
 import racecontrol.visualisation.gui.LPContainer;
 import java.util.logging.Logger;
+import racecontrol.client.AccBroadcastingClient;
 
 /**
  *
  * @author Leonard
  */
 public class CameraControlRawExtension
-        implements AccClientExtension, EventListener {
+        extends AccClientExtension
+        implements EventListener {
 
     private final static Logger LOG = Logger.getLogger(CameraControlRawExtension.class.getName());
 
     private final CameraControlRawPanel panel;
 
-    public CameraControlRawExtension() {
+    public CameraControlRawExtension(AccBroadcastingClient client) {
+        super(client);
         panel = new CameraControlRawPanel(this);
         EventBus.register(this);
     }
@@ -59,17 +60,17 @@ public class CameraControlRawExtension
 
     public void setCameraSet(String camSet, String cam) {
         LOG.info("Setting camera to " + camSet + " " + cam);
-        Main.getClient().sendSetCameraRequest(camSet, cam);
+        getClient().sendSetCameraRequest(camSet, cam);
     }
 
     public void setHudPage(String page) {
         LOG.info("Setting HUD page to " + page);
-        Main.getClient().sendSetHudPageRequest(page);
+        getClient().sendSetHudPageRequest(page);
     }
-    
-    public void startInstantReplay(float seconds, float duration){
+
+    public void startInstantReplay(float seconds, float duration) {
         LOG.info("Starting instant replay for " + seconds + " seconds");
-        Main.getClient().sendInstantReplayRequest(seconds, duration);     
+        getClient().sendInstantReplayRequest(seconds, duration);
     }
 
 }

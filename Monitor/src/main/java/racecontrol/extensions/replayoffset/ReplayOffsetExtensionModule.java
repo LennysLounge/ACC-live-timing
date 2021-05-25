@@ -5,6 +5,7 @@
  */
 package racecontrol.extensions.replayoffset;
 
+import racecontrol.client.AccBroadcastingClient;
 import racecontrol.client.extension.AccClientExtension;
 import racecontrol.visualisation.gui.LPContainer;
 import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
@@ -25,8 +26,8 @@ public class ReplayOffsetExtensionModule
     }
 
     @Override
-    public AccClientExtension createExtension() {
-        return new ReplayOffsetExtension();
+    public AccClientExtension createExtension(AccBroadcastingClient client) {
+        return new ReplayOffsetExtension(client);
     }
 
     @Override

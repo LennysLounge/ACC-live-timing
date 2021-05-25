@@ -5,7 +5,6 @@
  */
 package racecontrol.extensions.incidents;
 
-import racecontrol.Main;
 import racecontrol.client.data.SessionId;
 import racecontrol.client.events.AfterPacketReceived;
 import racecontrol.client.events.BroadcastingEventEvent;
@@ -34,16 +33,13 @@ import java.util.logging.Logger;
  * @author Leonard
  */
 public class IncidentExtension
-        implements EventListener, AccClientExtension {
+        extends AccClientExtension
+        implements EventListener {
 
     /**
      * This classes logger.
      */
     private static final Logger LOG = Logger.getLogger(IncidentExtension.class.getName());
-    /**
-     * Reference to the client.
-     */
-    private final AccBroadcastingClient client;
     /**
      * The visualisation for this extension.
      */
@@ -65,9 +61,8 @@ public class IncidentExtension
      */
     private boolean replayTimeKnown = false;
 
-    public IncidentExtension() {
-        //LogginExtension loggingExtension = dependsOn( LogginExtension.class );
-        this.client = Main.getClient();
+    public IncidentExtension(AccBroadcastingClient client) {
+        super(client);
         this.panel = new IncidentPanel(this);
         EventBus.register(this);
     }
@@ -81,7 +76,7 @@ public class IncidentExtension
     }
 
     public AccBroadcastingData getModel() {
-        return client.getModel();
+        return getClient().getModel();
     }
 
     public IncidentTableModel getTableModel() {
@@ -124,36 +119,36 @@ public class IncidentExtension
     }
 
     public void onAccident(BroadcastingEvent event) {
-        float sessionTime = client.getModel().getSessionInfo().getSessionTime();
-        String logMessage = "Accident: #" + client.getModel().getCar(event.getCarId()).getCarNumber()
+        float sessionTime = getClient().getModel().getSessionInfo().getSessionTime();
+        String logMessage = "Accident: #" + getClient().getModel().getCar(event.getCarId()).getCarNumber()
                 + "\t" + TimeUtils.asDuration(sessionTime)
                 + "\t" + TimeUtils.asDuration(ReplayOffsetExtension.getReplayTimeFromConnectionTime(event.getTimeMs()));
         LoggingExtension.log(logMessage);
         LOG.info(logMessage);
 
-        SessionId sessionId = client.getSessionId();
+        SessionId sessionId = getClient().getSessionId();
         if (stagedAccident == null) {
             stagedAccident = new IncidentInfo(sessionTime,
-                    client.getModel().getCar(event.getCarId()),
+                    getClient().getModel().getCar(event.getCarId()),
                     sessionId);
         } else {
             float timeDif = stagedAccident.getSessionLatestTime() - sessionTime;
             if (timeDif > 1000) {
                 commitAccident(stagedAccident);
                 stagedAccident = new IncidentInfo(sessionTime,
-                        client.getModel().getCar(event.getCarId()),
+                        getClient().getModel().getCar(event.getCarId()),
                         sessionId);
             } else {
                 stagedAccident = stagedAccident.addCar(sessionTime,
-                        client.getModel().getCar(event.getCarId()),
+                        getClient().getModel().getCar(event.getCarId()),
                         System.currentTimeMillis());
             }
         }
     }
 
     public void addEmptyAccident() {
-        commitAccident(new IncidentInfo(client.getModel().getSessionInfo().getSessionTime(),
-                client.getSessionId()));
+        commitAccident(new IncidentInfo(getClient().getModel().getSessionInfo().getSessionTime(),
+                getClient().getSessionId()));
     }
 
     private void commitAccident(IncidentInfo a) {
@@ -173,7 +168,7 @@ public class IncidentExtension
     }
 
     private void updateAccidentsWithReplayTime() {
-        SessionId currentSessionId = Main.getClient().getSessionId();
+        SessionId currentSessionId = getClient().getSessionId();
         List<IncidentInfo> newAccidents = new LinkedList<>();
         for (IncidentInfo incident : accidents) {
             if (incident.getSessionID().equals(currentSessionId)) {

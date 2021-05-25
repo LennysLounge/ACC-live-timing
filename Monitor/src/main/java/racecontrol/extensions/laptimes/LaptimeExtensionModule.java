@@ -5,6 +5,7 @@
  */
 package racecontrol.extensions.laptimes;
 
+import racecontrol.client.AccBroadcastingClient;
 import racecontrol.client.extension.AccClientExtension;
 import racecontrol.visualisation.gui.LPContainer;
 import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
@@ -22,15 +23,15 @@ public class LaptimeExtensionModule
     }
 
     @Override
-    public AccClientExtension createExtension() {
-        return new LapTimeExtension(false);
+    public AccClientExtension createExtension(AccBroadcastingClient client) {
+        return new LapTimeExtension(client, false);
     }
 
     @Override
     public LPContainer getExtensionConfigurationPanel() {
         return null;
     }
-    
+
     @Override
     public Class getExtensionClass() {
         return LapTimeExtension.class;

@@ -5,23 +5,42 @@
  */
 package racecontrol.client.extension;
 
+import racecontrol.client.AccBroadcastingClient;
 import racecontrol.visualisation.gui.LPContainer;
 
 /**
  *
  * @author Leonard
  */
-public interface AccClientExtension {
+public abstract class AccClientExtension {
+
+    /**
+     * Reference to the client.
+     */
+    private final AccBroadcastingClient client;
+
+    public AccClientExtension(AccBroadcastingClient client) {
+        this.client = client;
+    }
 
     /**
      * Returns the attached panel for this extension.
      *
      * @return The attached panel.
      */
-    public LPContainer getPanel();
+    public abstract LPContainer getPanel();
 
     /**
      * Removes all necessary references related to this extension.
      */
-    public void removeExtension();
+    public abstract void removeExtension();
+
+    /**
+     * Returns the reference to the client.
+     *
+     * @return the client.
+     */
+    public AccBroadcastingClient getClient() {
+        return client;
+    }
 }

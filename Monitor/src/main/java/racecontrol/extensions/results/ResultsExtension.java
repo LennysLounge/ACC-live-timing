@@ -32,13 +32,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import racecontrol.client.AccBroadcastingClient;
 
 /**
  *
  * @author Leonard
  */
 public class ResultsExtension
-        implements EventListener, AccClientExtension {
+        extends AccClientExtension
+        implements EventListener {
 
     private static final Logger LOG = Logger.getLogger(ResultsExtension.class.getName());
 
@@ -53,7 +55,8 @@ public class ResultsExtension
 
     private IncidentReport report = new IncidentReport();
 
-    public ResultsExtension() {
+    public ResultsExtension(AccBroadcastingClient client) {
+        super(client);
         EventBus.register(this);
     }
 

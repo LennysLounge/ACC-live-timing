@@ -24,13 +24,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import racecontrol.client.AccBroadcastingClient;
 
 /**
  *
  * @author Leonard
  */
 public class VelocityMapExtension
-        implements AccClientExtension, EventListener {
+        extends AccClientExtension
+        implements EventListener {
 
     private final static Logger LOG = Logger.getLogger(VelocityMapExtension.class.getName());
 
@@ -40,7 +42,8 @@ public class VelocityMapExtension
     private final int mapSize = 200;
     private String trackName = "none";
 
-    public VelocityMapExtension() {
+    public VelocityMapExtension(AccBroadcastingClient client) {
+        super(client);
         panel = new VelocityMapPanel(this);
         for (int i = 0; i < mapSize; i++) {
             velocityMap.add(-1f);

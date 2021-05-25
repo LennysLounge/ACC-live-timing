@@ -5,6 +5,7 @@
  */
 package racecontrol.extensions.debug;
 
+import racecontrol.client.AccBroadcastingClient;
 import racecontrol.eventbus.Event;
 import racecontrol.eventbus.EventBus;
 import racecontrol.eventbus.EventListener;
@@ -18,11 +19,13 @@ import racecontrol.visualisation.gui.LPContainer;
  * @author Leonard
  */
 public class DebugExtension
-        implements AccClientExtension, EventListener {
+        extends AccClientExtension
+        implements EventListener {
 
     DebugPanel panel;
 
-    public DebugExtension() {
+    public DebugExtension(AccBroadcastingClient client) {
+        super(client);
         this.panel = new DebugPanel();
         EventBus.register(this);
     }
