@@ -36,5 +36,10 @@ public class DebugExtensionModule
     public LPContainer getExtensionConfigurationPanel() {
         return configPanel;
     }
+    
+    @Override
+    public Class getExtensionClass() {
+        return DebugExtension.class;
+    }
 
 }

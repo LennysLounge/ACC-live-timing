@@ -30,4 +30,9 @@ public class ResultsExtensionModule
     public LPContainer getExtensionConfigurationPanel() {
         return null;
     }
+    
+    @Override
+    public Class getExtensionClass() {
+        return ResultsExtension.class;
+    }
 }

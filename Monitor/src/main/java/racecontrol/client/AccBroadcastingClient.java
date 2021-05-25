@@ -34,6 +34,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -121,9 +122,14 @@ public class AccBroadcastingClient {
      */
     private final List<AccBroadcastingClientExtensionModule> extensionModules = new LinkedList<>();
     /**
-     * Client extensions.
+     * Map from extension class to the extension instance.
      */
-    private final List<AccClientExtension> extensions = new LinkedList<>();
+    private final Map<Class, AccClientExtension> extensions = new HashMap<>();
+    /**
+     * List that containes all extension classes that are currently beeing
+     * created.
+     */
+    private final List<Class> circularDependencyPrevention = new LinkedList<>();
 
     /**
      * Default contructor.
@@ -158,15 +164,15 @@ public class AccBroadcastingClient {
         this.updateInterval = updateInterval;
         this.hostAddress = requireNonNull(hostAddress, "hostAddress");
         this.hostPort = requireNonNull(hostPort, "hostPort");
-        
+
         //create socket
         socket = new DatagramSocket();
         socket.connect(this.hostAddress, this.hostPort);
-        
+
         //create new data model and sessionId
         model = new AccBroadcastingData();
         sessionId = new SessionId(SessionType.NONE, -1, 0);
-        
+
         //create extensions
         removeExtensions();
         createExtensions();
@@ -249,13 +255,13 @@ public class AccBroadcastingClient {
     public SessionId getSessionId() {
         return sessionId;
     }
-    
-    public List<AccBroadcastingClientExtensionModule> getExtensionModules(){
+
+    public List<AccBroadcastingClientExtensionModule> getExtensionModules() {
         return extensionModules;
     }
-    
-    public List<AccClientExtension> getExtensions(){
-        return extensions;
+
+    public Collection<AccClientExtension> getExtensions() {
+        return extensions.values();
     }
 
     /**
@@ -368,6 +374,22 @@ public class AccBroadcastingClient {
         socket.close();
     }
 
+    public AccClientExtension getOrCreateExtension(Class clazz) {
+        if (!extensions.containsKey(clazz)) {
+            if (circularDependencyPrevention.contains(clazz)) {
+                //throw exception
+            }
+            circularDependencyPrevention.add(clazz);
+
+            extensionModules.stream()
+                    .filter(module -> module.getExtensionClass() == clazz)
+                    .forEach(module -> extensions.put(clazz, module.createExtension()));
+
+            circularDependencyPrevention.remove(clazz);
+        }
+        return extensions.get(clazz);
+    }
+
     private void sendRequest(byte[] requestBytes) {
         if (socket.isConnected()) {
             try {
@@ -384,17 +406,15 @@ public class AccBroadcastingClient {
             extensionModules.add(module);
         });
     }
-    
-    private void createExtensions(){
+
+    private void createExtensions() {
         extensionModules.stream()
                 .filter(module -> module.isEnabled())
-                .map(module -> module.createExtension())
-                .filter(extension -> extension != null)
-                .forEach(extension -> extensions.add(extension));
+                .forEach(module -> getOrCreateExtension(module.getExtensionClass()));
     }
-    
-    private void removeExtensions(){
-        extensions.stream()
+
+    private void removeExtensions() {
+        extensions.values().stream()
                 .forEach(extension -> extension.removeExtension());
         extensions.clear();
     }

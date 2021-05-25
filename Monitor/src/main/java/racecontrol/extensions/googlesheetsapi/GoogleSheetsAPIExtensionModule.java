@@ -76,5 +76,10 @@ public class GoogleSheetsAPIExtensionModule
     public LPContainer getExtensionConfigurationPanel() {
         return configurationPanel;
     }
+    
+    @Override
+    public Class getExtensionClass() {
+        return GoogleSheetsAPIExtension.class;
+    }
 
 }

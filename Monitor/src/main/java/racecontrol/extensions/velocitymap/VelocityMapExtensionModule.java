@@ -31,4 +31,9 @@ public class VelocityMapExtensionModule
     public LPContainer getExtensionConfigurationPanel() {
         return null;
     }
+    
+    @Override
+    public Class getExtensionClass() {
+        return VelocityMapExtension.class;
+    }
 }

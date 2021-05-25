@@ -33,4 +33,8 @@ public class ReplayOffsetExtensionModule
     public LPContainer getExtensionConfigurationPanel() {
         return null;
     }
+    @Override
+    public Class getExtensionClass() {
+        return ReplayOffsetExtension.class;
+    }
 }

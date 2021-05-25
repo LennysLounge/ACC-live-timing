@@ -30,4 +30,9 @@ public class LaptimeExtensionModule
     public LPContainer getExtensionConfigurationPanel() {
         return null;
     }
+    
+    @Override
+    public Class getExtensionClass() {
+        return LapTimeExtension.class;
+    }
 }

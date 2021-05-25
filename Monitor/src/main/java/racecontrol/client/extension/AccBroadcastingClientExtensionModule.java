@@ -32,4 +32,10 @@ public interface AccBroadcastingClientExtensionModule {
      * @return
      */
     public LPContainer getExtensionConfigurationPanel();
+    
+    /**
+     * Returns the class of the extentsion that this module creates.
+     * @return The class of the extension.
+     */
+    public Class getExtensionClass();
 }

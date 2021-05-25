@@ -31,4 +31,9 @@ public class LiveTimingExtensionModule
     public LPContainer getExtensionConfigurationPanel() {
         return null;
     }
+    
+    @Override
+    public Class getExtensionClass() {
+        return LiveTimingExtension.class;
+    }
 }

@@ -31,4 +31,9 @@ public class LoggingExtensionModule
     public LPContainer getExtensionConfigurationPanel() {
         return null;
     }
+    
+    @Override
+    public Class getExtensionClass() {
+        return LoggingExtension.class;
+    }
 }

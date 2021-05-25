@@ -31,4 +31,9 @@ public class CameraControlRawModule
     public LPContainer getExtensionConfigurationPanel() {
         return null;
     }
+
+    @Override
+    public Class getExtensionClass() {
+        return CameraControlRawExtension.class;
+    }
 }

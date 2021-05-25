@@ -30,4 +30,9 @@ public class IncidentExtensionModule
     public LPContainer getExtensionConfigurationPanel() {
         return null;
     }
+    
+    @Override
+    public Class getExtensionClass() {
+        return IncidentExtension.class;
+    }
 }
