@@ -393,8 +393,8 @@ public class AccBroadcastingClient {
     }
     
     private void removeExtensions(){
-        extensionModules.stream()
-                .forEach(module -> module.removeExtension());
+        extensions.stream()
+                .forEach(extension -> extension.removeExtension());
         extensions.clear();
     }
 

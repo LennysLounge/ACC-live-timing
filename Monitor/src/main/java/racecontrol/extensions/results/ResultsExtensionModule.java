@@ -16,25 +16,13 @@ import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
 public class ResultsExtensionModule
         implements AccBroadcastingClientExtensionModule {
 
-    private AccClientExtension extension;
-
     @Override
     public AccClientExtension createExtension() {
-        removeExtension();
-        extension = new ResultsExtension();
-        return extension;
+        return new ResultsExtension();
     }
 
     @Override
     public LPContainer getExtensionConfigurationPanel() {
         return null;
-    }
-
-    @Override
-    public void removeExtension() {
-        if (extension != null) {
-            extension.removeExtension();
-            extension = null;
-        }
     }
 }

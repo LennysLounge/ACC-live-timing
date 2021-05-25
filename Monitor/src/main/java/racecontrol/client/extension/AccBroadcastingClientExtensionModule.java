@@ -20,11 +20,6 @@ public interface AccBroadcastingClientExtensionModule {
     public AccClientExtension createExtension();
 
     /**
-     * Removes the extension.
-     */
-    public void removeExtension();
-
-    /**
      * Gives the configuration dialog panel for this extension. Returns null if
      * this extension does not have a configuration panel.
      *

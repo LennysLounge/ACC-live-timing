@@ -25,15 +25,15 @@ public class GoogleSheetsAPIExtensionModule
 
     private static final Logger LOG = Logger.getLogger(GoogleSheetsAPIExtensionModule.class.getName());
 
-    private GoogleSheetsAPIConfigurationPanel configurationPanel;
-    private GoogleSheetsAPIExtension extension;
+    private final GoogleSheetsAPIConfigurationPanel configurationPanel;
 
     public GoogleSheetsAPIExtensionModule() {
+        configurationPanel = new GoogleSheetsAPIConfigurationPanel();
     }
 
     @Override
     public AccClientExtension createExtension() {
-        removeExtension();
+        GoogleSheetsAPIExtension extension = null;
         if (configurationPanel.isExtensionEnabled()) {
             //save the credentals file path
             PersistantConfig.setConfig(CREDENTIALS_FILE_PATH, configurationPanel.getCredentialsPath());
@@ -71,17 +71,6 @@ public class GoogleSheetsAPIExtensionModule
 
     @Override
     public LPContainer getExtensionConfigurationPanel() {
-        if (configurationPanel == null) {
-            configurationPanel = new GoogleSheetsAPIConfigurationPanel();
-        }
         return configurationPanel;
-    }
-
-    @Override
-    public void removeExtension() {
-        if (extension != null) {
-            extension.removeExtension();
-            extension = null;
-        }
     }
 }

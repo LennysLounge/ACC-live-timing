@@ -16,28 +16,16 @@ import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
 public class ReplayOffsetExtensionModule
         implements AccBroadcastingClientExtensionModule {
 
-    private static ReplayOffsetExtension extension;
-
     public ReplayOffsetExtensionModule() {
     }
 
     @Override
     public AccClientExtension createExtension() {
-        removeExtension();
-        extension = new ReplayOffsetExtension();
-        return extension;
+        return new ReplayOffsetExtension();
     }
 
     @Override
     public LPContainer getExtensionConfigurationPanel() {
         return null;
-    }
-
-    @Override
-    public void removeExtension() {
-        if (extension != null) {
-            extension.removeExtension();
-            extension = null;
-        }
     }
 }

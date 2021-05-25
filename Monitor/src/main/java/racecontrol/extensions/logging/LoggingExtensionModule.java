@@ -16,16 +16,13 @@ import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
  */
 public class LoggingExtensionModule
         implements AccBroadcastingClientExtensionModule {
-
-    private AccClientExtension extension;
-
+    
     @Override
     public AccClientExtension createExtension() {
-        removeExtension();
         if (GeneralExtentionConfigPanel.getInstance().isLoggingEnabled()) {
-            extension = new LoggingExtension();
+            return new LoggingExtension();
         }
-        return extension;
+        return null;
     }
 
     @Override
@@ -33,11 +30,4 @@ public class LoggingExtensionModule
         return null;
     }
 
-    @Override
-    public void removeExtension() {
-        if (extension != null) {
-            extension.removeExtension();
-            extension = null;
-        }
-    }
 }

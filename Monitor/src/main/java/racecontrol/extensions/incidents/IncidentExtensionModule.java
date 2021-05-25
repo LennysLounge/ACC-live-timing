@@ -16,25 +16,13 @@ import racecontrol.visualisation.gui.LPContainer;
 public class IncidentExtensionModule
         implements AccBroadcastingClientExtensionModule {
 
-    private IncidentExtension extension;
-
     @Override
     public AccClientExtension createExtension() {
-        removeExtension();
-        extension = new IncidentExtension();
-        return extension;
+        return new IncidentExtension();
     }
 
     @Override
     public LPContainer getExtensionConfigurationPanel() {
         return null;
-    }
-
-    @Override
-    public void removeExtension() {
-        if (extension != null) {
-            extension.removeExtension();
-            extension = null;
-        }
     }
 }

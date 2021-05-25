@@ -17,27 +17,16 @@ import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
 public class LiveTimingExtensionModule
         implements AccBroadcastingClientExtensionModule {
 
-    private AccClientExtension extension;
-
     @Override
     public AccClientExtension createExtension() {
-        removeExtension();
         if (GeneralExtentionConfigPanel.getInstance().isLiveTimingEnabled()) {
-            extension = new LiveTimingExtension();
+            return new LiveTimingExtension();
         }
-        return extension;
+        return null;
     }
 
     @Override
     public LPContainer getExtensionConfigurationPanel() {
         return null;
-    }
-
-    @Override
-    public void removeExtension() {
-        if (extension != null) {
-            extension.removeExtension();
-            extension = null;
-        }
     }
 }

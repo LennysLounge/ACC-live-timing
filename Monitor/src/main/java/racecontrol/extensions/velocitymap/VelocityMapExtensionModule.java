@@ -17,23 +17,12 @@ import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
 public class VelocityMapExtensionModule
         implements AccBroadcastingClientExtensionModule {
 
-    VelocityMapExtension extension;
-
     @Override
     public AccClientExtension createExtension() {
-        removeExtension();
         if (GeneralExtentionConfigPanel.getInstance().isVelocityMapEnabled()) {
-            extension = new VelocityMapExtension();
+            return new VelocityMapExtension();
         }
-        return extension;
-    }
-
-    @Override
-    public void removeExtension() {
-        if (extension != null) {
-            extension.removeExtension();
-        }
-        extension = null;
+        return null;
     }
 
     @Override

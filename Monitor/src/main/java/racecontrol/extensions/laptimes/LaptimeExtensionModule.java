@@ -16,25 +16,13 @@ import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
 public class LaptimeExtensionModule
         implements AccBroadcastingClientExtensionModule {
 
-    private AccClientExtension extension;
-
     @Override
     public AccClientExtension createExtension() {
-        removeExtension();
-        extension = new LapTimeExtension(false);
-        return extension;
+        return new LapTimeExtension(false);
     }
 
     @Override
     public LPContainer getExtensionConfigurationPanel() {
         return null;
-    }
-
-    @Override
-    public void removeExtension() {
-        if (extension != null) {
-            extension.removeExtension();
-            extension = null;
-        }
     }
 }

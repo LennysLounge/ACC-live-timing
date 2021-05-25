@@ -17,7 +17,6 @@ public class DebugExtensionModule
         implements AccBroadcastingClientExtensionModule {
 
     private final DebugConfigPanel configPanel;
-    private DebugExtension extension;
 
     public DebugExtensionModule() {
         configPanel = new DebugConfigPanel();
@@ -25,23 +24,14 @@ public class DebugExtensionModule
 
     @Override
     public AccClientExtension createExtension() {
-        removeExtension();
         if (configPanel.isExtensionEnabled()) {
-            extension = new DebugExtension();
+            return new DebugExtension();
         }
-        return extension;
+        return null;
     }
 
     @Override
     public LPContainer getExtensionConfigurationPanel() {
         return configPanel;
-    }
-
-    @Override
-    public void removeExtension() {
-        if (extension != null) {
-            extension.removeExtension();
-            extension = null;
-        }
     }
 }

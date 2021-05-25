@@ -17,23 +17,12 @@ import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
 public class CameraControlRawModule
         implements AccBroadcastingClientExtensionModule {
 
-    CameraControlRawExtension extension;
-
     @Override
     public AccClientExtension createExtension() {
-        removeExtension();
         if (GeneralExtentionConfigPanel.getInstance().isCameraControlsEnabled()) {
-            extension = new CameraControlRawExtension();
+            return new CameraControlRawExtension();
         }
-        return extension;
-    }
-
-    @Override
-    public void removeExtension() {
-        if (extension != null) {
-            extension.removeExtension();
-            extension = null;
-        }
+        return null;
     }
 
     @Override
