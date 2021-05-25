@@ -1,0 +1,49 @@
+/*
+ * Copyright (c) 2021 Leonard Schüngel
+ * 
+ * For licensing information see the included license (LICENSE.txt)
+ */
+package racecontrol.extensions.incidents;
+
+import racecontrol.extensions.AccClientExtension;
+import racecontrol.visualisation.gui.LPContainer;
+
+/**
+ *
+ * @author Leonard
+ */
+public class IncidentExtensionFactory
+        implements racecontrol.client.extension.ACCLiveTimingExtensionFactory {
+
+    private IncidentExtension extension;
+
+    @Override
+    public String getName() {
+        return "Incident extension";
+    }
+
+    @Override
+    public void createExtension() {
+        removeExtension();
+        extension = new IncidentExtension();
+    }
+
+    @Override
+    public LPContainer getExtensionConfigurationPanel() {
+        return null;
+    }
+
+    @Override
+    public void removeExtension() {
+        if (extension != null) {
+            extension.removeExtension();
+            extension = null;
+        }
+    }
+
+    @Override
+    public AccClientExtension getExtension() {
+        return extension;
+    }
+
+}
