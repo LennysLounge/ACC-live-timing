@@ -14,6 +14,12 @@ import racecontrol.visualisation.gui.LPContainer;
 public interface AccBroadcastingClientExtensionModule {
     
     /**
+     * Returns true if the extension is enabled.
+     * @return true if the extension is enabled.
+     */
+    public boolean isEnabled();
+    
+    /**
      * Creates the client extension.
      * @return the created extension.
      */

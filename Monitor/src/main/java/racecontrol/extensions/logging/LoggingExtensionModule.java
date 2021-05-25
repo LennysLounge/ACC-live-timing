@@ -16,18 +16,19 @@ import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
  */
 public class LoggingExtensionModule
         implements AccBroadcastingClientExtensionModule {
-    
+
+    @Override
+    public boolean isEnabled() {
+        return GeneralExtentionConfigPanel.getInstance().isLoggingEnabled();
+    }
+
     @Override
     public AccClientExtension createExtension() {
-        if (GeneralExtentionConfigPanel.getInstance().isLoggingEnabled()) {
-            return new LoggingExtension();
-        }
-        return null;
+        return new LoggingExtension();
     }
 
     @Override
     public LPContainer getExtensionConfigurationPanel() {
         return null;
     }
-
 }

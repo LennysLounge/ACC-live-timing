@@ -18,11 +18,13 @@ public class VelocityMapExtensionModule
         implements AccBroadcastingClientExtensionModule {
 
     @Override
+    public boolean isEnabled() {
+        return GeneralExtentionConfigPanel.getInstance().isVelocityMapEnabled();
+    }
+
+    @Override
     public AccClientExtension createExtension() {
-        if (GeneralExtentionConfigPanel.getInstance().isVelocityMapEnabled()) {
-            return new VelocityMapExtension();
-        }
-        return null;
+        return new VelocityMapExtension();
     }
 
     @Override

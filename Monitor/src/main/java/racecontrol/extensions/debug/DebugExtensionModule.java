@@ -23,15 +23,18 @@ public class DebugExtensionModule
     }
 
     @Override
+    public boolean isEnabled() {
+        return configPanel.isExtensionEnabled();
+    }
+
+    @Override
     public AccClientExtension createExtension() {
-        if (configPanel.isExtensionEnabled()) {
-            return new DebugExtension();
-        }
-        return null;
+        return new DebugExtension();
     }
 
     @Override
     public LPContainer getExtensionConfigurationPanel() {
         return configPanel;
     }
+
 }

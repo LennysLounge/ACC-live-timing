@@ -16,6 +16,11 @@ import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
 public class ReplayOffsetExtensionModule
         implements AccBroadcastingClientExtensionModule {
 
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
     public ReplayOffsetExtensionModule() {
     }
 

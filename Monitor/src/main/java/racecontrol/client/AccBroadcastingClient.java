@@ -387,6 +387,7 @@ public class AccBroadcastingClient {
     
     private void createExtensions(){
         extensionModules.stream()
+                .filter(module -> module.isEnabled())
                 .map(module -> module.createExtension())
                 .filter(extension -> extension != null)
                 .forEach(extension -> extensions.add(extension));

@@ -17,6 +17,11 @@ public class IncidentExtensionModule
         implements AccBroadcastingClientExtensionModule {
 
     @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
     public AccClientExtension createExtension() {
         return new IncidentExtension();
     }

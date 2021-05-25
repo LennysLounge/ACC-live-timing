@@ -18,11 +18,13 @@ public class LiveTimingExtensionModule
         implements AccBroadcastingClientExtensionModule {
 
     @Override
+    public boolean isEnabled() {
+        return GeneralExtentionConfigPanel.getInstance().isLiveTimingEnabled();
+    }
+
+    @Override
     public AccClientExtension createExtension() {
-        if (GeneralExtentionConfigPanel.getInstance().isLiveTimingEnabled()) {
-            return new LiveTimingExtension();
-        }
-        return null;
+        return new LiveTimingExtension();
     }
 
     @Override

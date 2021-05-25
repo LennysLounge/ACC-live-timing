@@ -18,11 +18,13 @@ public class CameraControlRawModule
         implements AccBroadcastingClientExtensionModule {
 
     @Override
+    public boolean isEnabled() {
+        return GeneralExtentionConfigPanel.getInstance().isCameraControlsEnabled();
+    }
+
+    @Override
     public AccClientExtension createExtension() {
-        if (GeneralExtentionConfigPanel.getInstance().isCameraControlsEnabled()) {
-            return new CameraControlRawExtension();
-        }
-        return null;
+        return new CameraControlRawExtension();
     }
 
     @Override
