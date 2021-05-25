@@ -5,14 +5,13 @@
  */
 package racecontrol.client.extension;
 
-import racecontrol.extensions.AccClientExtension;
 import racecontrol.visualisation.gui.LPContainer;
 
 /**
  *
  * @author Leonard
  */
-public interface ACCLiveTimingExtensionFactory {
+public interface AccBroadcastingClientExtensionModule {
 
     /**
      * Returns the name for this extension.

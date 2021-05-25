@@ -5,7 +5,6 @@
  */
 package racecontrol.visualisation.components;
 
-import racecontrol.client.extension.ACCLiveTimingExtensionFactory;
 import racecontrol.Version;
 import racecontrol.persistance.PersistantConfig;
 import static racecontrol.persistance.PersistantConfig.CONNECTION_INTERVAL;
@@ -39,6 +38,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import static processing.core.PConstants.CENTER;
+import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
 
 /**
  *
@@ -247,7 +247,7 @@ public class ConfigPanel
         addComponent(extensionTabPanel);
 
         extensionTabPanel.addTab(GeneralExtentionConfigPanel.getInstance());
-        for (ACCLiveTimingExtensionFactory module : Visualisation.getModules()) {
+        for (AccBroadcastingClientExtensionModule module : Visualisation.getModules()) {
             LPContainer configurationPanel = module.getExtensionConfigurationPanel();
             if (configurationPanel != null) {
                 extensionTabPanel.addTab(configurationPanel);

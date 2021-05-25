@@ -5,16 +5,16 @@
  */
 package racecontrol.extensions.replayoffset;
 
-import racecontrol.client.extension.ACCLiveTimingExtensionFactory;
-import racecontrol.extensions.AccClientExtension;
+import racecontrol.client.extension.AccClientExtension;
 import racecontrol.visualisation.gui.LPContainer;
+import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
 
 /**
  *
  * @author Leonard
  */
 public class ReplayOffsetExtensionFactory
-        implements ACCLiveTimingExtensionFactory {
+        implements AccBroadcastingClientExtensionModule {
 
     private static ReplayOffsetExtension extension;
 

@@ -5,18 +5,18 @@
  */
 package racecontrol.extensions.livetiming;
 
-import racecontrol.extensions.AccClientExtension;
-import racecontrol.client.extension.ACCLiveTimingExtensionFactory;
+import racecontrol.client.extension.AccClientExtension;
 import racecontrol.persistance.PersistantConfig;
 import racecontrol.extensions.GeneralExtentionConfigPanel;
 import racecontrol.visualisation.gui.LPContainer;
+import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
 
 /**
  *
  * @author Leonard
  */
 public class LiveTimingExtensionFactory
-        implements ACCLiveTimingExtensionFactory {
+        implements AccBroadcastingClientExtensionModule {
 
     private AccClientExtension extension;
 

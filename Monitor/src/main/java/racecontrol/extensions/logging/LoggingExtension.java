@@ -5,7 +5,7 @@
  */
 package racecontrol.extensions.logging;
 
-import racecontrol.extensions.AccClientExtension;
+import racecontrol.client.extension.AccClientExtension;
 import racecontrol.visualisation.gui.LPContainer;
 import java.util.LinkedList;
 import java.util.List;

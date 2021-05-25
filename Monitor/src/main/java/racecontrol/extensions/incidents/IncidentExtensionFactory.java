@@ -5,7 +5,7 @@
  */
 package racecontrol.extensions.incidents;
 
-import racecontrol.extensions.AccClientExtension;
+import racecontrol.client.extension.AccClientExtension;
 import racecontrol.visualisation.gui.LPContainer;
 
 /**
@@ -13,7 +13,7 @@ import racecontrol.visualisation.gui.LPContainer;
  * @author Leonard
  */
 public class IncidentExtensionFactory
-        implements racecontrol.client.extension.ACCLiveTimingExtensionFactory {
+        implements racecontrol.client.extension.AccBroadcastingClientExtensionModule {
 
     private IncidentExtension extension;
 

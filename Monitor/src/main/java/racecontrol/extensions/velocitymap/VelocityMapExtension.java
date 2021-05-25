@@ -8,7 +8,7 @@ package racecontrol.extensions.velocitymap;
 import racecontrol.eventbus.Event;
 import racecontrol.eventbus.EventBus;
 import racecontrol.eventbus.EventListener;
-import racecontrol.extensions.AccClientExtension;
+import racecontrol.client.extension.AccClientExtension;
 import racecontrol.client.data.RealtimeInfo;
 import racecontrol.client.data.TrackInfo;
 import static racecontrol.client.data.enums.CarLocation.TRACK;

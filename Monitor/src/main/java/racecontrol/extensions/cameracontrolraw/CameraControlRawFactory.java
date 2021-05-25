@@ -5,17 +5,17 @@
  */
 package racecontrol.extensions.cameracontrolraw;
 
-import racecontrol.client.extension.ACCLiveTimingExtensionFactory;
-import racecontrol.extensions.AccClientExtension;
+import racecontrol.client.extension.AccClientExtension;
 import racecontrol.extensions.GeneralExtentionConfigPanel;
 import racecontrol.visualisation.gui.LPContainer;
+import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
 
 /**
  *
  * @author Leonard
  */
 public class CameraControlRawFactory
-        implements ACCLiveTimingExtensionFactory {
+        implements AccBroadcastingClientExtensionModule {
 
     CameraControlRawExtension extension;
 

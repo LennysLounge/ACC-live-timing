@@ -6,22 +6,22 @@
 package racecontrol.extensions.googlesheetsapi;
 
 import racecontrol.visualisation.gui.LPContainer;
-import racecontrol.client.extension.ACCLiveTimingExtensionFactory;
 import racecontrol.persistance.PersistantConfig;
 import static racecontrol.persistance.PersistantConfig.CREDENTIALS_FILE_PATH;
-import racecontrol.extensions.AccClientExtension;
+import racecontrol.client.extension.AccClientExtension;
 import java.io.FileNotFoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
+import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
 
 /**
  *
  * @author Leonard
  */
 public class GoogleSheetsAPIExtensionFactory
-        implements ACCLiveTimingExtensionFactory {
+        implements AccBroadcastingClientExtensionModule {
 
     private static final Logger LOG = Logger.getLogger(GoogleSheetsAPIExtensionFactory.class.getName());
 

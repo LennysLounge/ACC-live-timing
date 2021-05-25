@@ -1,0 +1,9 @@
+racecontrol.extensions.livetiming.LiveTimingExtensionFactory
+racecontrol.extensions.incidents.IncidentExtensionFactory
+racecontrol.extensions.logging.LoggingExtensionFactory
+racecontrol.extensions.laptimes.LaptimeExtensionFactory
+racecontrol.extensions.results.ResultsExtensionFactory
+racecontrol.extensions.googlesheetsapi.GoogleSheetsAPIExtensionFactory
+racecontrol.extensions.cameracontrolraw.CameraControlRawFactory
+racecontrol.extensions.replayoffset.ReplayOffsetExtensionFactory
+

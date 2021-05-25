@@ -41,11 +41,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import static java.util.Objects.requireNonNull;
+import java.util.ServiceLoader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import racecontrol.client.events.BroadcastingEventEvent;
 import racecontrol.client.events.EntryListUpdate;
 import racecontrol.client.events.RealtimeUpdate;
+import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
 
 /**
  * A basic connection to the broadcasting interface from Assetto Corsa
@@ -113,11 +115,16 @@ public class AccBroadcastingClient {
      * Counts how many packets have been received.
      */
     private static int packetCount = 0;
+    /**
+     * List of all extension modules.
+     */
+    private final List<AccBroadcastingClientExtensionModule> extensionModules = new LinkedList<>();
 
     /**
      * Default contructor.
      */
     public AccBroadcastingClient() {
+        loadModules();
     }
 
     /**
@@ -352,6 +359,13 @@ public class AccBroadcastingClient {
         }
     }
 
+    private void loadModules() {
+        ServiceLoader.load(AccBroadcastingClientExtensionModule.class).forEach(module -> {
+            LOG.info("Loading extension " + module.getName());
+            extensionModules.add(module);
+        });
+    }
+
     public enum ExitState {
         NORMAL,
         REFUSED,
@@ -476,9 +490,9 @@ public class AccBroadcastingClient {
 
             //Check for disconnected cars.
             checkForMissedRealtimeCarUpdates();
-            
+
             //initialise sessionId.
-            if(!sessionId.isValid()){
+            if (!sessionId.isValid()) {
                 initSessionId(sessionInfo);
             }
 
@@ -533,20 +547,19 @@ public class AccBroadcastingClient {
                 }
             }
         }
-        
-        private void initSessionId(SessionInfo sessionInfo){
+
+        private void initSessionId(SessionInfo sessionInfo) {
             SessionType type = sessionInfo.getSessionType();
             int sessionIndex = sessionInfo.getSessionIndex();
             int sessionNumber = sessionCounter.getOrDefault(type, -1) + 1;
             sessionCounter.put(type, sessionNumber);
-            
+
             SessionId newSessionId = new SessionId(type, sessionIndex, sessionNumber);
             onSessionChanged(newSessionId, sessionInfo, true);
             sessionId = newSessionId;
-            
+
             sessionPhase = SessionPhase.NONE;
         }
-       
 
         @Override
         public void onRealtimeCarUpdate(RealtimeInfo info) {

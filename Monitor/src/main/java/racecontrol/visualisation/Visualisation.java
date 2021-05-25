@@ -5,8 +5,7 @@
  */
 package racecontrol.visualisation;
 
-import racecontrol.client.extension.ACCLiveTimingExtensionFactory;
-import racecontrol.extensions.AccClientExtension;
+import racecontrol.client.extension.AccClientExtension;
 import racecontrol.visualisation.components.BasePanel;
 import racecontrol.client.AccBroadcastingClient;
 import java.awt.Graphics2D;
@@ -19,6 +18,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import processing.core.PGraphics;
 import processing.core.PImage;
+import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
 
 /**
  * The base for the processing visualization.
@@ -46,7 +46,7 @@ public class Visualisation extends CustomPApplet {
     /**
      * List of all registered extension modules.
      */
-    private static final List<ACCLiveTimingExtensionFactory> modules = new LinkedList<>();
+    private static final List<AccBroadcastingClientExtensionModule> modules = new LinkedList<>();
     /**
      * List of client extensions.
      */
@@ -115,13 +115,13 @@ public class Visualisation extends CustomPApplet {
     }
 
     private void loadModules() {
-        ServiceLoader.load(ACCLiveTimingExtensionFactory.class).forEach(module -> {
+        ServiceLoader.load(AccBroadcastingClientExtensionModule.class).forEach(module -> {
             LOG.info("Loading extension " + module.getName());
             modules.add(module);
         });
     }
 
-    public static List<ACCLiveTimingExtensionFactory> getModules() {
+    public static List<AccBroadcastingClientExtensionModule> getModules() {
         return modules;
     }
 

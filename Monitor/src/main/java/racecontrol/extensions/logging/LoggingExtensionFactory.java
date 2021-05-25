@@ -5,17 +5,17 @@
  */
 package racecontrol.extensions.logging;
 
-import racecontrol.extensions.AccClientExtension;
-import racecontrol.client.extension.ACCLiveTimingExtensionFactory;
+import racecontrol.client.extension.AccClientExtension;
 import racecontrol.extensions.GeneralExtentionConfigPanel;
 import racecontrol.visualisation.gui.LPContainer;
+import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
 
 /**
  *
  * @author Leonard
  */
 public class LoggingExtensionFactory
-        implements ACCLiveTimingExtensionFactory {
+        implements AccBroadcastingClientExtensionModule {
 
     private AccClientExtension extension;
 

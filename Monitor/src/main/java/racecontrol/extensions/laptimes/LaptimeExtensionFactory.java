@@ -5,16 +5,16 @@
  */
 package racecontrol.extensions.laptimes;
 
-import racecontrol.extensions.AccClientExtension;
-import racecontrol.client.extension.ACCLiveTimingExtensionFactory;
+import racecontrol.client.extension.AccClientExtension;
 import racecontrol.visualisation.gui.LPContainer;
+import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
 
 /**
  *
  * @author Leonard
  */
 public class LaptimeExtensionFactory
-        implements ACCLiveTimingExtensionFactory {
+        implements AccBroadcastingClientExtensionModule {
 
     private AccClientExtension extension;
 

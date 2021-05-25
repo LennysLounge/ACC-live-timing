@@ -12,7 +12,7 @@ import racecontrol.client.events.BroadcastingEventEvent;
 import racecontrol.eventbus.Event;
 import racecontrol.eventbus.EventBus;
 import racecontrol.eventbus.EventListener;
-import racecontrol.extensions.AccClientExtension;
+import racecontrol.client.extension.AccClientExtension;
 import racecontrol.extensions.GeneralExtentionConfigPanel;
 import racecontrol.extensions.logging.LoggingExtension;
 import racecontrol.client.data.AccBroadcastingData;
