@@ -717,7 +717,6 @@ public class AccBroadcastingClient {
             model = model.withCars(cars);
 
             String name = car.getDriver().getFirstName() + " " + car.getDriver().getLastName();
-            LoggingExtension.log("Car disconnected: #" + car.getCarNumber() + "\t" + name);
             LOG.info("Car disconnected: #" + car.getCarNumber() + "\t" + name);
             EventBus.publish(new CarDisconnect(car));
         }
@@ -729,7 +728,6 @@ public class AccBroadcastingClient {
             model = model.withCars(cars);
 
             String name = car.getDriver().getFirstName() + " " + car.getDriver().getLastName();
-            LoggingExtension.log("Car connected: #" + car.getCarNumber() + "\t" + name);
             LOG.info("Car connected: #" + car.getCarNumber() + "\t" + name);
             EventBus.publish(new CarConnect(car));
         }

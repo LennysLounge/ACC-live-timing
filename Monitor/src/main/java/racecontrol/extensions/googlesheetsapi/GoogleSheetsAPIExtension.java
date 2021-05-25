@@ -84,6 +84,10 @@ public class GoogleSheetsAPIExtension
      * List of recently connected cars to be send to the entry list.
      */
     private final List<CarInfo> carConnections = new LinkedList<>();
+    /**
+     * Reference to the logging extension.
+     */
+    private final LoggingExtension loggingExtension;
 
     public GoogleSheetsAPIExtension(AccBroadcastingClient client,
             GoogleSheetsService service) {
@@ -91,6 +95,7 @@ public class GoogleSheetsAPIExtension
         EventBus.register(this);
         panel = new GoogleSheetsAPIPanel(this);
         this.sheetService = service;
+        loggingExtension = (LoggingExtension) client.getOrCreateExtension(LoggingExtension.class);
     }
 
     @Override
@@ -99,7 +104,7 @@ public class GoogleSheetsAPIExtension
             currentSessionId = ((SessionChanged) e).getSessionId();
             setCurrentTargetSheet(getTargetSheet(currentSessionId));
             LOG.info("Target Sheet changed to \"" + currentSheetTarget + "\"");
-            LoggingExtension.log("Spreasheet target changed to \"" + currentSheetTarget + "\"");
+            loggingExtension.log("Spreasheet target changed to \"" + currentSheetTarget + "\"");
 
             //start replay offset measuring
             if (!((SessionChanged) e).isInitialisation()) {

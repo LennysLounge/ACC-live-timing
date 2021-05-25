@@ -60,11 +60,16 @@ public class IncidentExtension
      * Flag indicates that the replay offset is known.
      */
     private boolean replayTimeKnown = false;
+    /**
+     * Reference to the logging extension.
+     */
+    private final LoggingExtension loggingExtension;
 
     public IncidentExtension(AccBroadcastingClient client) {
         super(client);
         this.panel = new IncidentPanel(this);
         EventBus.register(this);
+        loggingExtension = (LoggingExtension) client.getOrCreateExtension(LoggingExtension.class);
     }
 
     @Override
@@ -123,7 +128,7 @@ public class IncidentExtension
         String logMessage = "Accident: #" + getClient().getModel().getCar(event.getCarId()).getCarNumber()
                 + "\t" + TimeUtils.asDuration(sessionTime)
                 + "\t" + TimeUtils.asDuration(ReplayOffsetExtension.getReplayTimeFromConnectionTime(event.getTimeMs()));
-        LoggingExtension.log(logMessage);
+        loggingExtension.log(logMessage);
         LOG.info(logMessage);
 
         SessionId sessionId = getClient().getSessionId();

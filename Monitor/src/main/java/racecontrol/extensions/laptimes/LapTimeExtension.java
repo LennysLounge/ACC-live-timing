@@ -46,7 +46,7 @@ public class LapTimeExtension
     /**
      * This classes logger.
      */
-    private static Logger LOG = Logger.getLogger(IncidentExtension.class.getName());
+    private static final Logger LOG = Logger.getLogger(IncidentExtension.class.getName());
     /**
      * Counts the laps for each car
      */
@@ -75,6 +75,10 @@ public class LapTimeExtension
      * Is the logging for this extension enabled.
      */
     private final boolean isLoggingEnabled;
+    /**
+     * Reference to the logging extension.
+     */
+    private final LoggingExtension loggingExtension;
 
     public LapTimeExtension(AccBroadcastingClient client, boolean isLoggingEnabled) {
         super(client);
@@ -83,6 +87,7 @@ public class LapTimeExtension
             createFolder();
         }
         EventBus.register(this);
+        loggingExtension = (LoggingExtension) client.getOrCreateExtension(LoggingExtension.class);
     }
 
     private void createFolder() {
@@ -156,7 +161,7 @@ public class LapTimeExtension
             message += "[Outlap]";
         }
 
-        LoggingExtension.log(message);
+        loggingExtension.log(message);
         LOG.info(message);
     }
 

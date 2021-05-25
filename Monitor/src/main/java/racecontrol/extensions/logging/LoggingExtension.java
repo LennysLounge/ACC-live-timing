@@ -21,14 +21,14 @@ public class LoggingExtension
     /**
      * Table model for the logging extension.
      */
-    private static final LoggingTableModel model = new LoggingTableModel();
+    private final LoggingTableModel model = new LoggingTableModel();
 
     /**
      * List of the log messages.
      */
-    private static final List<LogMessage> messages = new LinkedList<>();
+    private final List<LogMessage> messages = new LinkedList<>();
 
-    private static LPContainer panel;
+    private final LPContainer panel;
 
     public LoggingExtension(AccBroadcastingClient client) {
         super(client);
@@ -44,7 +44,7 @@ public class LoggingExtension
         return model;
     }
 
-    public static void log(String message) {
+    public void log(String message) {
         messages.add(new LogMessage(message));
         model.setMessages(messages);
         if (panel != null) {
