@@ -27,9 +27,10 @@ public class ReplayOffsetExtensionFactory
     }
 
     @Override
-    public void createExtension() {
+    public AccClientExtension createExtension() {
         removeExtension();
         extension = new ReplayOffsetExtension();
+        return extension;
     }
 
     @Override
@@ -44,10 +45,4 @@ public class ReplayOffsetExtensionFactory
             extension = null;
         }
     }
-
-    @Override
-    public AccClientExtension getExtension() {
-        return extension;
-    }
-
 }

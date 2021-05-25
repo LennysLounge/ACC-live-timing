@@ -22,9 +22,9 @@ public interface AccBroadcastingClientExtensionModule {
 
     /**
      * Creates the client extension.
-     *
+     * @return the created extension.
      */
-    public void createExtension();
+    public AccClientExtension createExtension();
 
     /**
      * Removes the extension.
@@ -38,11 +38,4 @@ public interface AccBroadcastingClientExtensionModule {
      * @return
      */
     public LPContainer getExtensionConfigurationPanel();
-
-    /**
-     * returns the extension.
-     *
-     * @return
-     */
-    public AccClientExtension getExtension();
 }

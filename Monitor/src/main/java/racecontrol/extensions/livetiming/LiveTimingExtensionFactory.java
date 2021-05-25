@@ -6,7 +6,6 @@
 package racecontrol.extensions.livetiming;
 
 import racecontrol.client.extension.AccClientExtension;
-import racecontrol.persistance.PersistantConfig;
 import racecontrol.extensions.GeneralExtentionConfigPanel;
 import racecontrol.visualisation.gui.LPContainer;
 import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
@@ -26,11 +25,12 @@ public class LiveTimingExtensionFactory
     }
 
     @Override
-    public void createExtension() {        
+    public AccClientExtension createExtension() {
         removeExtension();
         if (GeneralExtentionConfigPanel.getInstance().isLiveTimingEnabled()) {
             extension = new LiveTimingExtension();
         }
+        return extension;
     }
 
     @Override
@@ -45,10 +45,4 @@ public class LiveTimingExtensionFactory
             extension = null;
         }
     }
-
-    @Override
-    public AccClientExtension getExtension() {
-        return extension;
-    }
-
 }

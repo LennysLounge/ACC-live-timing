@@ -106,11 +106,6 @@ public class ConfigPanel
     }
 
     private void connectButtonPressed() {
-        //Remove all current extension.
-        
-        client.getExtensionModules().stream()
-                .forEach(module -> module.removeExtension());
-
         InetAddress hostAddress;
         try {
             hostAddress = InetAddress.getByName(ipTextField.getValue());
@@ -134,10 +129,6 @@ public class ConfigPanel
             JOptionPane.showMessageDialog(null, updateIntervalTextField.getValue() + " is not a valid port.");
             return;
         }
-
-        //Create new extensions.
-        client.getExtensionModules().stream()
-                .forEach(module -> module.createExtension());
 
         try {
             client.connect("ACC Live timing",
@@ -248,12 +239,10 @@ public class ConfigPanel
         addComponent(extensionTabPanel);
 
         extensionTabPanel.addTab(GeneralExtentionConfigPanel.getInstance());
-        for (AccBroadcastingClientExtensionModule module : client.getExtensionModules()) {
-            LPContainer configurationPanel = module.getExtensionConfigurationPanel();
-            if (configurationPanel != null) {
-                extensionTabPanel.addTab(configurationPanel);
-            }
-        }
+        client.getExtensionModules().stream()
+                .map(extensionModule -> extensionModule.getExtensionConfigurationPanel())
+                .filter(panel -> panel != null)
+                .forEach(configPanel -> extensionTabPanel.addTab(configPanel));
         extensionTabPanel.setTabIndex(0);
 
         addComponent(versionLabel);

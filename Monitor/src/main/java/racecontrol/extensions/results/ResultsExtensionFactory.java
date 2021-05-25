@@ -24,9 +24,10 @@ public class ResultsExtensionFactory
     }
 
     @Override
-    public void createExtension() {
+    public AccClientExtension createExtension() {
         removeExtension();
         extension = new ResultsExtension();
+        return extension;
     }
 
     @Override
@@ -41,10 +42,4 @@ public class ResultsExtensionFactory
             extension = null;
         }
     }
-
-    @Override
-    public AccClientExtension getExtension() {
-        return extension;
-    }
-
 }

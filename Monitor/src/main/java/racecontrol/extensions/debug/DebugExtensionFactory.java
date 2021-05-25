@@ -29,11 +29,12 @@ public class DebugExtensionFactory
     }
 
     @Override
-    public void createExtension() {
+    public AccClientExtension createExtension() {
         removeExtension();
         if (configPanel.isExtensionEnabled()) {
             extension = new DebugExtension();
         }
+        return extension;
     }
 
     @Override
@@ -47,10 +48,5 @@ public class DebugExtensionFactory
             extension.removeExtension();
             extension = null;
         }
-    }
-
-    @Override
-    public AccClientExtension getExtension() {
-        return extension;
     }
 }

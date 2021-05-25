@@ -25,12 +25,12 @@ public class CameraControlRawFactory
     }
 
     @Override
-    public void createExtension() {
+    public AccClientExtension createExtension() {
         removeExtension();
         if (GeneralExtentionConfigPanel.getInstance().isCameraControlsEnabled()) {
             extension = new CameraControlRawExtension();
         }
-
+        return extension;
     }
 
     @Override
@@ -45,10 +45,4 @@ public class CameraControlRawFactory
     public LPContainer getExtensionConfigurationPanel() {
         return null;
     }
-
-    @Override
-    public AccClientExtension getExtension() {
-        return extension;
-    }
-
 }

@@ -12,11 +12,8 @@ import racecontrol.client.AccBroadcastingClient;
 import racecontrol.client.events.ConnectionClosed;
 import racecontrol.client.events.ConnectionOpened;
 import racecontrol.visualisation.LookAndFeel;
-import racecontrol.visualisation.Visualisation;
 import racecontrol.visualisation.gui.LPContainer;
 import racecontrol.visualisation.gui.LPTabPanel;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -64,9 +61,7 @@ public class BasePanel
     @Override
     public void onEvent(Event e) {
         if (e instanceof ConnectionOpened) {
-            client.getExtensionModules().stream()
-                    .map(module -> module.getExtension())
-                    .filter(extension -> extension != null)
+            client.getExtensions().stream()
                     .map(extension -> extension.getPanel())
                     .filter(panel -> panel != null)
                     .forEach(panel -> body.addTab(panel));

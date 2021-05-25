@@ -23,9 +23,10 @@ public class IncidentExtensionFactory
     }
 
     @Override
-    public void createExtension() {
+    public AccClientExtension createExtension() {
         removeExtension();
         extension = new IncidentExtension();
+        return extension;
     }
 
     @Override
@@ -40,10 +41,4 @@ public class IncidentExtensionFactory
             extension = null;
         }
     }
-
-    @Override
-    public AccClientExtension getExtension() {
-        return extension;
-    }
-
 }

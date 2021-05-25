@@ -25,11 +25,12 @@ public class LoggingExtensionFactory
     }
 
     @Override
-    public void createExtension() {
+    public AccClientExtension createExtension() {
         removeExtension();
         if (GeneralExtentionConfigPanel.getInstance().isLoggingEnabled()) {
             extension = new LoggingExtension();
         }
+        return extension;
     }
 
     @Override
@@ -44,10 +45,4 @@ public class LoggingExtensionFactory
             extension = null;
         }
     }
-
-    @Override
-    public AccClientExtension getExtension() {
-        return extension;
-    }
-
 }

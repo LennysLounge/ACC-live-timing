@@ -48,6 +48,7 @@ import racecontrol.client.events.BroadcastingEventEvent;
 import racecontrol.client.events.EntryListUpdate;
 import racecontrol.client.events.RealtimeUpdate;
 import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
+import racecontrol.client.extension.AccClientExtension;
 
 /**
  * A basic connection to the broadcasting interface from Assetto Corsa
@@ -119,6 +120,10 @@ public class AccBroadcastingClient {
      * List of all extension modules.
      */
     private final List<AccBroadcastingClientExtensionModule> extensionModules = new LinkedList<>();
+    /**
+     * Client extensions.
+     */
+    private final List<AccClientExtension> extensions = new LinkedList<>();
 
     /**
      * Default contructor.
@@ -153,12 +158,18 @@ public class AccBroadcastingClient {
         this.updateInterval = updateInterval;
         this.hostAddress = requireNonNull(hostAddress, "hostAddress");
         this.hostPort = requireNonNull(hostPort, "hostPort");
-
+        
+        //create socket
         socket = new DatagramSocket();
         socket.connect(this.hostAddress, this.hostPort);
-
+        
+        //create new data model and sessionId
         model = new AccBroadcastingData();
         sessionId = new SessionId(SessionType.NONE, -1, 0);
+        
+        //create extensions
+        removeExtensions();
+        createExtensions();
 
         startListernerThread();
     }
@@ -241,6 +252,10 @@ public class AccBroadcastingClient {
     
     public List<AccBroadcastingClientExtensionModule> getExtensionModules(){
         return extensionModules;
+    }
+    
+    public List<AccClientExtension> getExtensions(){
+        return extensions;
     }
 
     /**
@@ -368,6 +383,19 @@ public class AccBroadcastingClient {
             LOG.info("Loading extension " + module.getName());
             extensionModules.add(module);
         });
+    }
+    
+    private void createExtensions(){
+        extensionModules.stream()
+                .map(module -> module.createExtension())
+                .filter(extension -> extension != null)
+                .forEach(extension -> extensions.add(extension));
+    }
+    
+    private void removeExtensions(){
+        extensionModules.stream()
+                .forEach(module -> module.removeExtension());
+        extensions.clear();
     }
 
     public enum ExitState {

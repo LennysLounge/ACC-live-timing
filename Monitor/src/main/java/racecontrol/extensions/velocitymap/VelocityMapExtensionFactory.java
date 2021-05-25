@@ -25,11 +25,12 @@ public class VelocityMapExtensionFactory
     }
 
     @Override
-    public void createExtension() {
+    public AccClientExtension createExtension() {
         removeExtension();
         if (GeneralExtentionConfigPanel.getInstance().isVelocityMapEnabled()) {
             extension = new VelocityMapExtension();
         }
+        return extension;
     }
 
     @Override
@@ -44,10 +45,4 @@ public class VelocityMapExtensionFactory
     public LPContainer getExtensionConfigurationPanel() {
         return null;
     }
-
-    @Override
-    public AccClientExtension getExtension() {
-        return extension;
-    }
-
 }

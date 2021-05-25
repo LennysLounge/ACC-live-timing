@@ -24,9 +24,10 @@ public class LaptimeExtensionFactory
     }
 
     @Override
-    public void createExtension() {
+    public AccClientExtension createExtension() {
         removeExtension();
         extension = new LapTimeExtension(false);
+        return extension;
     }
 
     @Override
@@ -41,10 +42,4 @@ public class LaptimeExtensionFactory
             extension = null;
         }
     }
-
-    @Override
-    public AccClientExtension getExtension() {
-        return extension;
-    }
-
 }

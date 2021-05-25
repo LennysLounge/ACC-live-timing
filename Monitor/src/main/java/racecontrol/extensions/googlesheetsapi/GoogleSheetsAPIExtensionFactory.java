@@ -38,7 +38,7 @@ public class GoogleSheetsAPIExtensionFactory
     }
 
     @Override
-    public void createExtension() {
+    public AccClientExtension createExtension() {
         removeExtension();
         if (configurationPanel.isExtensionEnabled()) {
             //save the credentals file path
@@ -71,8 +71,8 @@ public class GoogleSheetsAPIExtensionFactory
                         + "\nThe file could not be found.",
                         "Error loading API credentials", ERROR_MESSAGE);
             }
-
         }
+        return extension;
     }
 
     @Override
@@ -90,10 +90,4 @@ public class GoogleSheetsAPIExtensionFactory
             extension = null;
         }
     }
-
-    @Override
-    public AccClientExtension getExtension() {
-        return extension;
-    }
-
 }
