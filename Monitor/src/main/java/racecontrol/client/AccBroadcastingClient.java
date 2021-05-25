@@ -238,6 +238,10 @@ public class AccBroadcastingClient {
     public SessionId getSessionId() {
         return sessionId;
     }
+    
+    public List<AccBroadcastingClientExtensionModule> getExtensionModules(){
+        return extensionModules;
+    }
 
     /**
      * Send a register command.

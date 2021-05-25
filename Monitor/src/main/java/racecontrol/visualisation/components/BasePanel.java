@@ -30,7 +30,10 @@ public class BasePanel
     private final LPTabPanel body;
     private final ConfigPanel configPanel;
 
+    private final AccBroadcastingClient client;
+
     public BasePanel(AccBroadcastingClient client) {
+        this.client = client;
         EventBus.register(this);
         header = new HeaderPanel(client);
         addComponent(header);
@@ -61,7 +64,7 @@ public class BasePanel
     @Override
     public void onEvent(Event e) {
         if (e instanceof ConnectionOpened) {
-            Visualisation.getModules().stream()
+            client.getExtensionModules().stream()
                     .map(module -> module.getExtension())
                     .filter(extension -> extension != null)
                     .map(extension -> extension.getPanel())

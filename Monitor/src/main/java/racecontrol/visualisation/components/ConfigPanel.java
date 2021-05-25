@@ -107,7 +107,8 @@ public class ConfigPanel
 
     private void connectButtonPressed() {
         //Remove all current extension.
-        Visualisation.getModules().stream()
+        
+        client.getExtensionModules().stream()
                 .forEach(module -> module.removeExtension());
 
         InetAddress hostAddress;
@@ -135,7 +136,7 @@ public class ConfigPanel
         }
 
         //Create new extensions.
-        Visualisation.getModules().stream()
+        client.getExtensionModules().stream()
                 .forEach(module -> module.createExtension());
 
         try {
@@ -247,7 +248,7 @@ public class ConfigPanel
         addComponent(extensionTabPanel);
 
         extensionTabPanel.addTab(GeneralExtentionConfigPanel.getInstance());
-        for (AccBroadcastingClientExtensionModule module : Visualisation.getModules()) {
+        for (AccBroadcastingClientExtensionModule module : client.getExtensionModules()) {
             LPContainer configurationPanel = module.getExtensionConfigurationPanel();
             if (configurationPanel != null) {
                 extensionTabPanel.addTab(configurationPanel);

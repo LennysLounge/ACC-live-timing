@@ -44,22 +44,12 @@ public class Visualisation extends CustomPApplet {
      */
     private BasePanel basePanel;
     /**
-     * List of all registered extension modules.
-     */
-    private static final List<AccBroadcastingClientExtensionModule> modules = new LinkedList<>();
-    /**
-     * List of client extensions.
-     */
-    private static final List<AccClientExtension> extensions = new LinkedList<>();
-
-    /**
      * Creates a new instance of this object.
      *
      * @param client The ACC client connection to use.
      */
     public Visualisation(AccBroadcastingClient client) {
         this.client = client;
-        loadModules();
     }
 
     @Override
@@ -112,17 +102,6 @@ public class Visualisation extends CustomPApplet {
             client.stopAndKill();
         }
         super.exit();
-    }
-
-    private void loadModules() {
-        ServiceLoader.load(AccBroadcastingClientExtensionModule.class).forEach(module -> {
-            LOG.info("Loading extension " + module.getName());
-            modules.add(module);
-        });
-    }
-
-    public static List<AccBroadcastingClientExtensionModule> getModules() {
-        return modules;
     }
 
     private PImage loadResourceAsPImage(String resource) {
