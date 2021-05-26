@@ -33,8 +33,7 @@ import java.util.logging.Logger;
  * @author Leonard
  */
 public class IncidentExtension
-        extends AccClientExtension
-        implements EventListener {
+        extends AccClientExtension {
 
     /**
      * This classes logger.
@@ -72,7 +71,6 @@ public class IncidentExtension
     public IncidentExtension(AccBroadcastingClient client) {
         super(client);
         this.panel = new IncidentPanel(this);
-        EventBus.register(this);
         loggingExtension = client.getOrCreateExtension(LoggingExtension.class);
         replayOffsetExtension = client.getOrCreateExtension(ReplayOffsetExtension.class);
     }
@@ -174,11 +172,6 @@ public class IncidentExtension
 
         EventBus.publish(new Accident(a));
         panel.invalidate();
-    }
-
-    @Override
-    public void removeExtension() {
-        EventBus.unregister(this);
     }
 
     private void updateAccidentsWithReplayTime() {

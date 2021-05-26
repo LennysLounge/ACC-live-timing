@@ -383,7 +383,11 @@ public class AccBroadcastingClient {
 
             extensionModules.stream()
                     .filter(module -> module.getExtensionClass() == clazz)
-                    .forEach(module -> extensions.put(clazz, module.createExtension(this)));
+                    .forEach(module -> {
+                        AccClientExtension extension = module.createExtension(this);
+                        EventBus.register(extension);
+                        extensions.put(clazz, extension);
+                    });
 
             circularDependencyPrevention.remove(clazz);
         }
@@ -415,7 +419,7 @@ public class AccBroadcastingClient {
 
     private void removeExtensions() {
         extensions.values().stream()
-                .forEach(extension -> extension.removeExtension());
+                .forEach(extension -> EventBus.unregister(extension));
         extensions.clear();
     }
 

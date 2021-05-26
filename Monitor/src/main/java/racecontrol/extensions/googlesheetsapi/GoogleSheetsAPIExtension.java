@@ -41,8 +41,7 @@ import java.util.stream.Collectors;
  * @author Leonard
  */
 public class GoogleSheetsAPIExtension
-        extends AccClientExtension
-        implements EventListener {
+        extends AccClientExtension {
 
     private static final Logger LOG = Logger.getLogger(GoogleSheetsAPIExtension.class.getName());
 
@@ -92,7 +91,6 @@ public class GoogleSheetsAPIExtension
     public GoogleSheetsAPIExtension(AccBroadcastingClient client,
             GoogleSheetsService service) {
         super(client);
-        EventBus.register(this);
         panel = new GoogleSheetsAPIPanel(this);
         this.sheetService = service;
         loggingExtension = client.getOrCreateExtension(LoggingExtension.class);
@@ -323,12 +321,6 @@ public class GoogleSheetsAPIExtension
     @Override
     public LPContainer getPanel() {
         return panel;
-    }
-
-    @Override
-    public void removeExtension() {
-        EventBus.unregister(this);
-
     }
 
     private class SendIncidentEvent {

@@ -10,6 +10,7 @@ import racecontrol.visualisation.gui.LPContainer;
 import java.util.LinkedList;
 import java.util.List;
 import racecontrol.client.AccBroadcastingClient;
+import racecontrol.eventbus.Event;
 
 /**
  *
@@ -53,7 +54,7 @@ public class LoggingExtension
     }
 
     @Override
-    public void removeExtension() {
+    public void onEvent(Event e) {
     }
-
+    
 }

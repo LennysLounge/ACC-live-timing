@@ -40,8 +40,7 @@ import java.util.stream.Collectors;
  * @author Leonard
  */
 public class LiveTimingExtension
-        extends AccClientExtension
-        implements EventListener {
+        extends AccClientExtension {
 
     /**
      * This classes logger.
@@ -70,13 +69,11 @@ public class LiveTimingExtension
     /**
      * Calculator to calculate the live gaps between cars.
      */
-    private GapCalculator gapCalculator = new GapCalculator();
+    private final GapCalculator gapCalculator = new GapCalculator();
 
     public LiveTimingExtension(AccBroadcastingClient client) {
         super(client);
         this.panel = new LiveTimingPanel(this);
-
-        EventBus.register(this);
     }
 
     @Override
@@ -115,11 +112,6 @@ public class LiveTimingExtension
             gapCalculator.loadVMapForTrack(trackInfo.getTrackName());
             gapCalculator.setTrackLength(trackInfo.getTrackMeters());
         }
-    }
-
-    @Override
-    public void removeExtension() {
-        EventBus.unregister(this);
     }
 
     public void onRealtimeUpdate(SessionInfo sessionInfo) {

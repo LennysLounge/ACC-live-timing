@@ -25,8 +25,7 @@ import racecontrol.client.AccBroadcastingClient;
  * @author Leonard
  */
 public class ReplayOffsetExtension
-        extends AccClientExtension
-        implements EventListener {
+        extends AccClientExtension {
 
     /**
      * Explaination of how this works:
@@ -120,7 +119,6 @@ public class ReplayOffsetExtension
 
     public ReplayOffsetExtension(AccBroadcastingClient client) {
         super(client);
-        EventBus.register(this);
         replayStartTime = 0;
         gameConnectionTime = 0;
         isInSearchMode = false;
@@ -129,11 +127,6 @@ public class ReplayOffsetExtension
     @Override
     public LPContainer getPanel() {
         return null;
-    }
-
-    @Override
-    public void removeExtension() {
-        EventBus.unregister(this);
     }
 
     @Override

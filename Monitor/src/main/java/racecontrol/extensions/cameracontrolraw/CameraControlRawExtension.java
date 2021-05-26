@@ -22,8 +22,7 @@ import racecontrol.client.AccBroadcastingClient;
  * @author Leonard
  */
 public class CameraControlRawExtension
-        extends AccClientExtension
-        implements EventListener {
+        extends AccClientExtension {
 
     private final static Logger LOG = Logger.getLogger(CameraControlRawExtension.class.getName());
 
@@ -32,17 +31,11 @@ public class CameraControlRawExtension
     public CameraControlRawExtension(AccBroadcastingClient client) {
         super(client);
         panel = new CameraControlRawPanel(this);
-        EventBus.register(this);
     }
 
     @Override
     public LPContainer getPanel() {
         return panel;
-    }
-
-    @Override
-    public void removeExtension() {
-        EventBus.unregister(this);
     }
 
     @Override

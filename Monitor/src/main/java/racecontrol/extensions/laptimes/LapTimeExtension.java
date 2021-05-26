@@ -40,8 +40,7 @@ import java.util.logging.Logger;
  * @author Leonard
  */
 public class LapTimeExtension
-        extends AccClientExtension
-        implements EventListener {
+        extends AccClientExtension {
 
     /**
      * This classes logger.
@@ -86,7 +85,6 @@ public class LapTimeExtension
         if (isLoggingEnabled) {
             createFolder();
         }
-        EventBus.register(this);
         loggingExtension = client.getOrCreateExtension(LoggingExtension.class);
     }
 
@@ -209,10 +207,4 @@ public class LapTimeExtension
     public LPContainer getPanel() {
         return null;
     }
-
-    @Override
-    public void removeExtension() {
-        EventBus.unregister(this);
-    }
-
 }

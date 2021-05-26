@@ -39,8 +39,7 @@ import racecontrol.client.AccBroadcastingClient;
  * @author Leonard
  */
 public class ResultsExtension
-        extends AccClientExtension
-        implements EventListener {
+        extends AccClientExtension {
 
     private static final Logger LOG = Logger.getLogger(ResultsExtension.class.getName());
 
@@ -53,11 +52,10 @@ public class ResultsExtension
     private long greenFlagOffsetTimestamp = 0;
     private long greenFlagOffset = 0;
 
-    private IncidentReport report = new IncidentReport();
+    private final IncidentReport report = new IncidentReport();
 
     public ResultsExtension(AccBroadcastingClient client) {
         super(client);
-        EventBus.register(this);
     }
 
     @Override
@@ -178,11 +176,6 @@ public class ResultsExtension
 
     private String getCarNumberAndLapCount(CarInfo car) {
         return car.getCarNumber() + " [" + (car.getRealtime().getLaps() + 1) + "]";
-    }
-
-    @Override
-    public void removeExtension() {
-        EventBus.unregister(this);
     }
 
 }

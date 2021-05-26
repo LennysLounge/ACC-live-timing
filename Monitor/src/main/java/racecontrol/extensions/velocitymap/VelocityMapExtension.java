@@ -31,8 +31,7 @@ import racecontrol.client.AccBroadcastingClient;
  * @author Leonard
  */
 public class VelocityMapExtension
-        extends AccClientExtension
-        implements EventListener {
+        extends AccClientExtension {
 
     private final static Logger LOG = Logger.getLogger(VelocityMapExtension.class.getName());
 
@@ -50,16 +49,11 @@ public class VelocityMapExtension
             velocityMapTotal.add(new ArrayList<>());
         }
         panel.setVelocityMap(velocityMap);
-        EventBus.register(this);
     }
 
     @Override
     public LPContainer getPanel() {
         return panel;
-    }
-
-    @Override
-    public void removeExtension() {
     }
 
     @Override

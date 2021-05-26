@@ -6,13 +6,15 @@
 package racecontrol.client.extension;
 
 import racecontrol.client.AccBroadcastingClient;
+import racecontrol.eventbus.EventListener;
 import racecontrol.visualisation.gui.LPContainer;
 
 /**
  *
  * @author Leonard
  */
-public abstract class AccClientExtension {
+public abstract class AccClientExtension
+    implements EventListener{
 
     /**
      * Reference to the client.
@@ -29,11 +31,6 @@ public abstract class AccClientExtension {
      * @return The attached panel.
      */
     public abstract LPContainer getPanel();
-
-    /**
-     * Removes all necessary references related to this extension.
-     */
-    public abstract void removeExtension();
 
     /**
      * Returns the reference to the client.
