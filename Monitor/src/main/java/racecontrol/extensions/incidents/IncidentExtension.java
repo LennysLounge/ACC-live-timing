@@ -64,12 +64,17 @@ public class IncidentExtension
      * Reference to the logging extension.
      */
     private final LoggingExtension loggingExtension;
+    /**
+     * Reference to the replay offset extension
+     */
+    private final ReplayOffsetExtension replayOffsetExtension;
 
     public IncidentExtension(AccBroadcastingClient client) {
         super(client);
         this.panel = new IncidentPanel(this);
         EventBus.register(this);
         loggingExtension = (LoggingExtension) client.getOrCreateExtension(LoggingExtension.class);
+        replayOffsetExtension = (ReplayOffsetExtension) client.getOrCreateExtension(ReplayOffsetExtension.class);
     }
 
     @Override
@@ -98,7 +103,7 @@ public class IncidentExtension
     public void onEvent(Event e) {
         if (e instanceof AfterPacketReceived) {
             afterPacketReceived(((AfterPacketReceived) e).getType());
-            if (!replayTimeKnown && ReplayOffsetExtension.requireSearch()) {
+            if (!replayTimeKnown && replayOffsetExtension.requireSearch()) {
                 panel.enableSearchButton();
             }
         } else if (e instanceof BroadcastingEventEvent) {
@@ -127,13 +132,14 @@ public class IncidentExtension
         float sessionTime = getClient().getModel().getSessionInfo().getSessionTime();
         String logMessage = "Accident: #" + getClient().getModel().getCar(event.getCarId()).getCarNumber()
                 + "\t" + TimeUtils.asDuration(sessionTime)
-                + "\t" + TimeUtils.asDuration(ReplayOffsetExtension.getReplayTimeFromConnectionTime(event.getTimeMs()));
+                + "\t" + TimeUtils.asDuration(replayOffsetExtension.getReplayTimeFromConnectionTime(event.getTimeMs()));
         loggingExtension.log(logMessage);
         LOG.info(logMessage);
 
         SessionId sessionId = getClient().getSessionId();
         if (stagedAccident == null) {
             stagedAccident = new IncidentInfo(sessionTime,
+                    replayOffsetExtension.isReplayTimeKnown() ? replayOffsetExtension.getReplayTimeFromSessionTime((int) sessionTime) : 0,
                     getClient().getModel().getCar(event.getCarId()),
                     sessionId);
         } else {
@@ -141,6 +147,7 @@ public class IncidentExtension
             if (timeDif > 1000) {
                 commitAccident(stagedAccident);
                 stagedAccident = new IncidentInfo(sessionTime,
+                        replayOffsetExtension.isReplayTimeKnown() ? replayOffsetExtension.getReplayTimeFromSessionTime((int) sessionTime) : 0,
                         getClient().getModel().getCar(event.getCarId()),
                         sessionId);
             } else {
@@ -152,7 +159,9 @@ public class IncidentExtension
     }
 
     public void addEmptyAccident() {
-        commitAccident(new IncidentInfo(getClient().getModel().getSessionInfo().getSessionTime(),
+        float sessionTime = getClient().getModel().getSessionInfo().getSessionTime();
+        commitAccident(new IncidentInfo(sessionTime,
+                replayOffsetExtension.isReplayTimeKnown() ? replayOffsetExtension.getReplayTimeFromSessionTime((int) sessionTime) : 0,
                 getClient().getSessionId()));
     }
 
@@ -178,7 +187,7 @@ public class IncidentExtension
         for (IncidentInfo incident : accidents) {
             if (incident.getSessionID().equals(currentSessionId)) {
                 newAccidents.add(incident.withReplayTime(
-                        ReplayOffsetExtension.getReplayTimeFromSessionTime((int) incident.getSessionEarliestTime())
+                        replayOffsetExtension.getReplayTimeFromSessionTime((int) incident.getSessionEarliestTime())
                 ));
             }
         }
@@ -188,9 +197,13 @@ public class IncidentExtension
 
         if (stagedAccident != null) {
             stagedAccident = stagedAccident.withReplayTime(
-                    ReplayOffsetExtension.getReplayTimeFromSessionTime((int) stagedAccident.getSessionEarliestTime())
+                    replayOffsetExtension.getReplayTimeFromSessionTime((int) stagedAccident.getSessionEarliestTime())
             );
         }
+    }
+
+    public void findReplayOffset() {
+        replayOffsetExtension.findSessionChange();
     }
 
 }

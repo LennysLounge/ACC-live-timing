@@ -33,7 +33,7 @@ public class DebugPanel
         button.setSize(200, LookAndFeel.LINE_HEIGHT);
         button.setPosition(20, 0);
         button.setAction(() -> {
-            ReplayOffsetExtension.findSessionChange();
+            //ReplayOffsetExtension.findSessionChange();
             /*
             Main.getClient().sendInstantReplayRequest(
                     Main.getClient().getModel().getSessionInfo().getSessionTime() / 1000,

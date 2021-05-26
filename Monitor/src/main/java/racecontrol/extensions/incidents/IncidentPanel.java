@@ -50,7 +50,7 @@ public class IncidentPanel extends LPContainer {
         findReplayOffsetButton.setVisible(false);
         addComponent(findReplayOffsetButton);
         findReplayOffsetButton.setAction(() -> {
-            ReplayOffsetExtension.findSessionChange();
+            extension.findReplayOffset();
             findReplayOffsetButton.setEnabled(false);
         });
     }

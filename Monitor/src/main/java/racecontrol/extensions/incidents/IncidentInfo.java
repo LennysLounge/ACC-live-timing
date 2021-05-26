@@ -47,23 +47,23 @@ public class IncidentInfo {
      */
     private final SessionId sessionID;
 
-    public IncidentInfo(float time, CarInfo car, SessionId sessionId) {
+    public IncidentInfo(float time, int replayTime, CarInfo car, SessionId sessionId) {
         this(time,
                 time,
                 Arrays.asList(car),
                 System.currentTimeMillis(),
                 sessionId,
-                ReplayOffsetExtension.isReplayTimeKnown() ? ReplayOffsetExtension.getReplayTimeFromSessionTime((int) time) : 0
+                replayTime
         );
     }
 
-    public IncidentInfo(float time, SessionId sessionId) {
+    public IncidentInfo(float time, int replayTime, SessionId sessionId) {
         this(time,
                 time,
                 new LinkedList<CarInfo>(),
                 System.currentTimeMillis(),
                 sessionId,
-                ReplayOffsetExtension.isReplayTimeKnown() ? ReplayOffsetExtension.getReplayTimeFromSessionTime((int) time) : 0
+                replayTime
         );
     }
 

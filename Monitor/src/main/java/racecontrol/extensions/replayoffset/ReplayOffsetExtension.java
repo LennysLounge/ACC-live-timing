@@ -74,24 +74,20 @@ public class ReplayOffsetExtension
      * This classes logger.
      */
     private static final Logger LOG = Logger.getLogger(ReplayOffsetExtension.class.getName());
-    /**
-     * Current instance of this extension.
-     */
-    private static ReplayOffsetExtension instance;
 
     /**
      * The timestamp of when the replay starts.
      */
-    private static long replayStartTime = 0;
+    private long replayStartTime = 0;
     /**
      * Timestamp of when the game connected to the server.
      */
-    private static long gameConnectionTime = 0;
+    private long gameConnectionTime = 0;
     /**
      * The replay seams to be offset from the time calculated here by roughly
      * this ammount.
      */
-    private final static int MAGIC_OFFSET = -6000;
+    private final int MAGIC_OFFSET = -6000;
     /**
      * Flag that incidates that the extension is currently searching for the
      * replay start time.
@@ -128,7 +124,6 @@ public class ReplayOffsetExtension
         replayStartTime = 0;
         gameConnectionTime = 0;
         isInSearchMode = false;
-        instance = this;
     }
 
     @Override
@@ -139,7 +134,6 @@ public class ReplayOffsetExtension
     @Override
     public void removeExtension() {
         EventBus.unregister(this);
-        instance = null;
     }
 
     @Override
@@ -199,17 +193,15 @@ public class ReplayOffsetExtension
      * @return The time in the replay. Negative if the moment is not in the
      * replay or if the replay time is now know.
      */
-    public static int getReplayTimeFromSessionTime(int sessionTime) {
+    public int getReplayTimeFromSessionTime(int sessionTime) {
         if (!isReplayTimeKnown()) {
             return -1;
         }
-        /*
+
         long now = System.currentTimeMillis();
         long sessionOffset = (now - replayStartTime)
                 - (int) getClient().getModel().getSessionInfo().getSessionTime();
         return sessionTime + (int) sessionOffset + MAGIC_OFFSET;
-        */
-        return 0;
     }
 
     /**
@@ -220,7 +212,7 @@ public class ReplayOffsetExtension
      * @return The time in the replay. Negative if the moment is not in the
      * replay or if the replay time is now know.
      */
-    public static int getReplayTimeFromConnectionTime(int timeSinceConnection) {
+    public int getReplayTimeFromConnectionTime(int timeSinceConnection) {
         if (!isReplayTimeKnown()) {
             return -1;
         }
@@ -228,7 +220,6 @@ public class ReplayOffsetExtension
             return -1;
         }
 
-        /*
         long now = System.currentTimeMillis();
         long requestTimeStamp = timeSinceConnection + gameConnectionTime;
         long sessionStartTimeStamp = now
@@ -236,8 +227,6 @@ public class ReplayOffsetExtension
         long sessionOffset = (now - replayStartTime)
                 - (int) getClient().getModel().getSessionInfo().getSessionTime();
         return (int) (requestTimeStamp - sessionStartTimeStamp + sessionOffset) + MAGIC_OFFSET;
-        */
-        return 0;
     }
 
     /**
@@ -247,7 +236,7 @@ public class ReplayOffsetExtension
      *
      * @return True if the replay time is known.
      */
-    public static boolean isReplayTimeKnown() {
+    public boolean isReplayTimeKnown() {
         return (replayStartTime != 0);
     }
 
@@ -256,7 +245,7 @@ public class ReplayOffsetExtension
      *
      * @return True if a search for replay time is needed.
      */
-    public static boolean requireSearch() {
+    public boolean requireSearch() {
         return replayStartTime == 0 && gameConnectionTime != 0;
     }
 
@@ -265,19 +254,19 @@ public class ReplayOffsetExtension
      * offset for the replay. This process may take a while and should only be
      * started when the user is aware of it.
      */
-    public static void findSessionChange() {
+    public void findSessionChange() {
         if (isReplayTimeKnown()) {
             return;
         }
-        instance.searchStepSize = 300000;
-        instance.searchStep = 1;
-        instance.upperBound = System.currentTimeMillis() + instance.searchStepSize;
-        instance.lowerBound = instance.upperBound - instance.searchStepSize;
-        instance.searchStep(false);
+        searchStepSize = 300000;
+        searchStep = 1;
+        upperBound = System.currentTimeMillis() + searchStepSize;
+        lowerBound = upperBound - searchStepSize;
+        searchStep(false);
     }
 
-    public static boolean isSearching() {
-        return instance.searchStep != 0;
+    public boolean isSearching() {
+        return searchStep != 0;
     }
 
     private void searchStep(boolean replayMissed) {

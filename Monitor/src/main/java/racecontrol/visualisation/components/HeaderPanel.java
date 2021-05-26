@@ -30,8 +30,11 @@ public class HeaderPanel extends LPComponent {
 
     private final AccBroadcastingClient client;
 
+    private final ReplayOffsetExtension replayOffsetExtension;
+
     public HeaderPanel(AccBroadcastingClient client) {
         this.client = client;
+        replayOffsetExtension = (ReplayOffsetExtension) client.getOrCreateExtension(ReplayOffsetExtension.class);
     }
 
     @Override
@@ -41,7 +44,7 @@ public class HeaderPanel extends LPComponent {
             if (client.getModel().getSessionInfo().isReplayPlaying()) {
                 applet.fill(COLOR_BLUE);
             }
-            if (ReplayOffsetExtension.isSearching()) {
+            if (replayOffsetExtension.isSearching()) {
                 applet.fill(LookAndFeel.COLOR_GREEN);
             }
 
@@ -59,7 +62,7 @@ public class HeaderPanel extends LPComponent {
             applet.text(conId, 10, y + LINE_HEIGHT * 0.5f);
             applet.text(packetsReceived, 200, y + LINE_HEIGHT * 0.5f);
             if (client.getModel().getSessionInfo().isReplayPlaying()) {
-                if (!ReplayOffsetExtension.isSearching()) {
+                if (!replayOffsetExtension.isSearching()) {
                     applet.text("Replay time remaining: " + TimeUtils.asDuration(client.getModel().getSessionInfo().getReplayRemainingTime()),
                             500, LINE_HEIGHT * 0.5f);
 
@@ -67,7 +70,7 @@ public class HeaderPanel extends LPComponent {
                             850, LINE_HEIGHT * 0.5f);
                 }
             }
-            if (ReplayOffsetExtension.isSearching()) {
+            if (replayOffsetExtension.isSearching()) {
                 applet.text("Searching for replay time, please wait", 500, LINE_HEIGHT * 0.5f);
             }
 
