@@ -87,7 +87,7 @@ public class LapTimeExtension
             createFolder();
         }
         EventBus.register(this);
-        loggingExtension = (LoggingExtension) client.getOrCreateExtension(LoggingExtension.class);
+        loggingExtension = client.getOrCreateExtension(LoggingExtension.class);
     }
 
     private void createFolder() {

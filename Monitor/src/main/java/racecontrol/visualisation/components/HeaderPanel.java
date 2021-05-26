@@ -34,7 +34,7 @@ public class HeaderPanel extends LPComponent {
 
     public HeaderPanel(AccBroadcastingClient client) {
         this.client = client;
-        replayOffsetExtension = (ReplayOffsetExtension) client.getOrCreateExtension(ReplayOffsetExtension.class);
+        replayOffsetExtension = client.getOrCreateExtension(ReplayOffsetExtension.class);
     }
 
     @Override

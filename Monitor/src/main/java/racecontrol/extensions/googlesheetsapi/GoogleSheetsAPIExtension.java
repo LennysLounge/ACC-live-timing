@@ -95,7 +95,7 @@ public class GoogleSheetsAPIExtension
         EventBus.register(this);
         panel = new GoogleSheetsAPIPanel(this);
         this.sheetService = service;
-        loggingExtension = (LoggingExtension) client.getOrCreateExtension(LoggingExtension.class);
+        loggingExtension = client.getOrCreateExtension(LoggingExtension.class);
     }
 
     @Override

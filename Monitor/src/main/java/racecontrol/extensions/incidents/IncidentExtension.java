@@ -73,8 +73,8 @@ public class IncidentExtension
         super(client);
         this.panel = new IncidentPanel(this);
         EventBus.register(this);
-        loggingExtension = (LoggingExtension) client.getOrCreateExtension(LoggingExtension.class);
-        replayOffsetExtension = (ReplayOffsetExtension) client.getOrCreateExtension(ReplayOffsetExtension.class);
+        loggingExtension = client.getOrCreateExtension(LoggingExtension.class);
+        replayOffsetExtension = client.getOrCreateExtension(ReplayOffsetExtension.class);
     }
 
     @Override

@@ -374,7 +374,7 @@ public class AccBroadcastingClient {
         socket.close();
     }
 
-    public AccClientExtension getOrCreateExtension(Class clazz) {
+    public <T extends AccClientExtension> T getOrCreateExtension(Class<T> clazz) {
         if (!extensions.containsKey(clazz)) {
             if (circularDependencyPrevention.contains(clazz)) {
                 //throw exception
@@ -387,7 +387,7 @@ public class AccBroadcastingClient {
 
             circularDependencyPrevention.remove(clazz);
         }
-        return extensions.get(clazz);
+        return clazz.cast(extensions.get(clazz));
     }
 
     private void sendRequest(byte[] requestBytes) {
