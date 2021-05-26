@@ -16,7 +16,6 @@ import racecontrol.client.events.RegistrationResult;
 import racecontrol.client.events.SessionPhaseChanged;
 import racecontrol.client.events.TrackData;
 import racecontrol.eventbus.EventBus;
-import racecontrol.extensions.logging.LoggingExtension;
 import racecontrol.client.data.AccBroadcastingData;
 import racecontrol.client.data.BroadcastingEvent;
 import racecontrol.client.data.CarInfo;
@@ -37,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -124,7 +124,7 @@ public class AccBroadcastingClient {
     /**
      * Map from extension class to the extension instance.
      */
-    private final Map<Class, AccClientExtension> extensions = new HashMap<>();
+    private final Map<Class, AccClientExtension> extensions = new LinkedHashMap<>();
     /**
      * List that containes all extension classes that are currently beeing
      * created.
