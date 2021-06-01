@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import racecontrol.extensions.livetiming.tablemodels.LiveTimingTableModel;
 import static racecontrol.visualisation.LookAndFeel.LINE_HEIGHT;
 import racecontrol.visualisation.gui.LPButton;
@@ -23,6 +24,8 @@ import racecontrol.visualisation.gui.LPTable;
  */
 public class BroadcastingPanel
         extends LPContainer {
+
+    public static final Logger LOG = Logger.getLogger(BroadcastingPanel.class.getName());
 
     /**
      * Extension.
@@ -67,21 +70,23 @@ public class BroadcastingPanel
         addHUDButton("BC", "Broadcasting");
         addHUDButton("Map", "TrackMap");
 
-        addCarCameraButton("Chase", "Drivable", "Chase");
-        addCarCameraButton("Far Chase", "Drivable", "FarChase");
+        addCarCameraButton("Bumper", "Drivable", "DashPro");
         addCarCameraButton("Bonnet", "Drivable", "Bonnet");
-        addCarCameraButton("Dash", "Drivable", "DashPro");
+        addCarCameraButton("Wing", "Onboard", "Onboard3");
+        addCarCameraButton("Dash", "Drivable", "Dash");
         addCarCameraButton("Cockpit", "Drivable", "Cockpit");
         addCarCameraButton("Helmet", "Drivable", "Helmet");
-        addCarCameraButton("Onboard 0", "Onboard", "Onboard0");
-        addCarCameraButton("Onboard 1", "Onboard", "Onboard1");
-        addCarCameraButton("Onboard 2", "Onboard", "Onboard2");
-        addCarCameraButton("Onboard 3", "Onboard", "Onboard3");
+        addCarCameraButton("Interior", "Onboard", "Onboard0");
+        addCarCameraButton("Driver", "Onboard", "Onboard1");
+        addCarCameraButton("Passenger", "Onboard", "Onboard2");
+        addCarCameraButton("Chase", "Drivable", "Chase");
+        addCarCameraButton("Far Chase", "Drivable", "FarChase");
+
     }
 
     @Override
     public void onResize(int w, int h) {
-        int tableHeight = (int) Math.max(2, Math.floor(h / LINE_HEIGHT) - 10);
+        int tableHeight = (int) Math.max(2, Math.floor(h / LINE_HEIGHT) - 7);
         table.setPosition(0, 0);
         table.setSize(w, tableHeight * LINE_HEIGHT);
 
