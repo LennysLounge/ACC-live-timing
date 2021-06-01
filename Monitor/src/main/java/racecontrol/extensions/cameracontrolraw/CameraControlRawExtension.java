@@ -6,8 +6,6 @@
 package racecontrol.extensions.cameracontrolraw;
 
 import racecontrol.eventbus.Event;
-import racecontrol.eventbus.EventBus;
-import racecontrol.eventbus.EventListener;
 import racecontrol.client.extension.AccClientExtension;
 import racecontrol.client.events.RealtimeUpdate;
 import racecontrol.client.data.SessionInfo;
