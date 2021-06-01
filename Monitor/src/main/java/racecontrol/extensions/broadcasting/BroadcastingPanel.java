@@ -10,7 +10,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import racecontrol.extensions.livetiming.tablemodels.LiveTimingTableModel;
 import static racecontrol.visualisation.LookAndFeel.LINE_HEIGHT;
 import racecontrol.visualisation.gui.LPButton;
@@ -45,7 +44,7 @@ public class BroadcastingPanel
     private final List<LPButton> tvCameraButtons = new LinkedList<>();
 
     public BroadcastingPanel(BroadcastingExtension extension) {
-        setName("Broadcasting");
+        setName("BROADCASTING");
 
         this.extension = extension;
 
