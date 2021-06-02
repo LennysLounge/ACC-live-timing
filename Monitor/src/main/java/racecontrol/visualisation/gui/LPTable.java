@@ -146,7 +146,13 @@ public class LPTable extends LPContainer {
         //Draw model
         int rowLimit = Math.min(model.getRowCount(), visibleRows);
         if (overdrawForLastLine) {
-            rowLimit = Math.min(model.getRowCount() - scrollbar.scroll, visibleRows + 1);
+            int v = (int) Math.ceil(getHeight() / LookAndFeel.LINE_HEIGHT);
+            if (drawHeader) {
+                v -= 1;
+            }
+            //we want to draw an extra line if the height of the table is not
+            //devisible by the line height. To do this we round up.
+            rowLimit = Math.min(model.getRowCount() - scrollbar.scroll, v);
         }
         for (int row = 0; row < rowLimit; row++) {
             float columnOffset = scrollbar.width;
