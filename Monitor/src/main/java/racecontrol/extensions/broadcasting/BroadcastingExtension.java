@@ -9,9 +9,7 @@ import java.util.logging.Logger;
 import racecontrol.client.AccBroadcastingClient;
 import racecontrol.client.data.SessionInfo;
 import racecontrol.client.data.TrackInfo;
-import racecontrol.client.events.AfterPacketReceived;
 import racecontrol.client.events.RealtimeUpdate;
-import racecontrol.client.events.SessionChanged;
 import racecontrol.client.events.TrackData;
 import racecontrol.client.extension.AccClientExtension;
 import racecontrol.eventbus.Event;
@@ -34,17 +32,13 @@ public class BroadcastingExtension
      * Reference to the live timing extension.
      */
     private final LiveTimingExtension liveTimingExtension;
-    /**
-     * Flag that indicates that the live timing table model should be updated.
-     */
-    private boolean updateTableModel = true;
 
     public BroadcastingExtension(AccBroadcastingClient client) {
         super(client);
 
         liveTimingExtension = client.getOrCreateExtension(LiveTimingExtension.class);
 
-        this.panel = new BroadcastingPanel(this);
+        this.panel = new BroadcastingPanel(this, liveTimingExtension.getPanel());
     }
 
     @Override
@@ -54,13 +48,7 @@ public class BroadcastingExtension
 
     @Override
     public void onEvent(Event e) {
-        if (e instanceof SessionChanged) {
-            updateTableModel = true;
-        } else if (e instanceof AfterPacketReceived) {
-            if (updateTableModel) {
-                panel.setLiveTimingTableModel(liveTimingExtension.getTableModel());
-            }
-        } else if (e instanceof TrackData) {
+        if (e instanceof TrackData) {
             TrackInfo info = ((TrackData) e).getInfo();
             panel.setCameraSets(info.getCameraSets());
         } else if (e instanceof RealtimeUpdate) {
@@ -75,10 +63,15 @@ public class BroadcastingExtension
         LOG.info("Setting HUD page to " + page);
         getClient().sendSetHudPageRequest(page);
     }
-    
+
     public void setCameraSet(String camSet, String cam) {
         LOG.info("Setting camera to " + camSet + " " + cam);
         getClient().sendSetCameraRequest(camSet, cam);
+    }
+
+    public void startInstantReplay(float seconds, float duration) {
+        LOG.info("Starting instant replay for " + seconds + " seconds");
+        getClient().sendInstantReplayRequest(seconds, duration);
     }
 
 }

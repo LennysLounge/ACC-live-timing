@@ -16,7 +16,7 @@ import static racecontrol.visualisation.LookAndFeel.LINE_HEIGHT;
 import racecontrol.visualisation.gui.LPButton;
 import racecontrol.visualisation.gui.LPContainer;
 import racecontrol.visualisation.gui.LPLabel;
-import racecontrol.visualisation.gui.LPTable;
+import racecontrol.visualisation.gui.LPTextField;
 
 /**
  *
@@ -32,28 +32,37 @@ public class BroadcastingPanel
      */
     private final BroadcastingExtension extension;
     /**
-     * The table that display the live timing.
+     * The panel of the live timing extension.
      */
-    private final LPTable table = new LPTable();
+    private final LPContainer liveTimingPanel;
 
     private final LPLabel hudLabel = new LPLabel("HUD");
     private final LPLabel carCameraLable = new LPLabel("Car Cameras");
     private final LPLabel tvCameraLable = new LPLabel("TV Cameras");
-    private final LPLabel replayLabel = new LPLabel("Replay");
 
     private final Map<String, LPButton> hudButtons = new LinkedHashMap<>();
     private final Map<String, Map<String, LPButton>> cameraButtonsRef = new HashMap<>();
     private final List<LPButton> carCameraButtons = new LinkedList<>();
     private final List<LPButton> tvCameraButtons = new LinkedList<>();
 
-    public BroadcastingPanel(BroadcastingExtension extension) {
+    private final LPLabel instantReplayLabel = new LPLabel("Instant Replay");
+    private final LPButton instantReplay60Button = new LPButton("-60s");
+    private final LPButton instantReplay30Button = new LPButton("-30s");
+    private final LPButton instantReplay15Button = new LPButton("-15s");
+    private final LPTextField instantReplayBackTextField = new LPTextField();
+    private final LPLabel instantReplayCustomLabel = new LPLabel("seconds back, for");
+    private final LPTextField instantReplayDurationTextField = new LPTextField();
+    private final LPLabel instantReplayDurationLabel = new LPLabel("seconds.");
+    private final LPButton instantReplayCustomButton = new LPButton("Custom");
+
+    public BroadcastingPanel(BroadcastingExtension extension,
+            LPContainer liveTimingPanel) {
+        this.extension = extension;
+        this.liveTimingPanel = liveTimingPanel;
+        
         setName("BROADCASTING");
 
-        this.extension = extension;
-
-        table.setOverdrawForLastLine(false);
-        //table.setCellClickAction((c, r) -> onCellClickAction(c, r));
-        addComponent(table);
+        addComponent(liveTimingPanel);
 
         hudLabel.setSize(200, LINE_HEIGHT);
         addComponent(hudLabel);
@@ -82,17 +91,52 @@ public class BroadcastingPanel
         addCarCameraButton("Chase", "Drivable", "Chase");
         addCarCameraButton("Far Chase", "Drivable", "FarChase");
 
+        instantReplayLabel.setSize(200, LINE_HEIGHT);
+        addComponent(instantReplayLabel);
+
+        instantReplay60Button.setSize(60, LINE_HEIGHT);
+        instantReplay60Button.setAction(() -> extension.startInstantReplay(60, 60));
+        addComponent(instantReplay60Button);
+        instantReplay30Button.setSize(60, LINE_HEIGHT);
+        instantReplay30Button.setAction(() -> extension.startInstantReplay(30, 30));
+        addComponent(instantReplay30Button);
+        instantReplay15Button.setSize(60, LINE_HEIGHT);
+        instantReplay15Button.setAction(() -> extension.startInstantReplay(15, 15));
+        addComponent(instantReplay15Button);
+
+        instantReplayBackTextField.setSize(60, LINE_HEIGHT);
+        instantReplayBackTextField.setValue("60");
+        addComponent(instantReplayBackTextField);
+        instantReplayCustomLabel.setSize(160, LINE_HEIGHT);
+        addComponent(instantReplayCustomLabel);
+        instantReplayDurationTextField.setSize(60, LINE_HEIGHT);
+        instantReplayDurationTextField.setValue("15");
+        addComponent(instantReplayDurationTextField);
+        instantReplayDurationLabel.setSize(90, LINE_HEIGHT);
+        addComponent(instantReplayDurationLabel);
+        instantReplayCustomButton.setSize(100, LINE_HEIGHT);
+        instantReplayCustomButton.setAction(() -> {
+            try {
+                int seconds = Integer.parseInt(instantReplayBackTextField.getValue());
+                int duration = Integer.parseInt(instantReplayDurationTextField.getValue());
+                extension.startInstantReplay(seconds, duration);
+            } catch (Exception e) {
+
+            }
+        });
+        addComponent(instantReplayCustomButton);
     }
 
     @Override
     public void onResize(int w, int h) {
         int tableHeight = (int) Math.max(2, Math.floor(h / LINE_HEIGHT) - 7);
-        table.setPosition(0, 0);
-        table.setSize(w, tableHeight * LINE_HEIGHT);
+        liveTimingPanel.setPosition(0, 0);
+        liveTimingPanel.setSize(w, tableHeight * LINE_HEIGHT);
 
         hudLabel.setPosition(20, LINE_HEIGHT * tableHeight);
         carCameraLable.setPosition(210, LINE_HEIGHT * tableHeight);
         tvCameraLable.setPosition(210, LINE_HEIGHT * (tableHeight + 4));
+        instantReplayLabel.setPosition(870, LINE_HEIGHT * tableHeight);
 
         int x = 20;
         int y = 1;
@@ -118,11 +162,23 @@ public class BroadcastingPanel
             button.setPosition(x, (tableHeight + y) * LINE_HEIGHT);
             x += button.getWidth() + 4;
         }
-    }
+        x = 862;
+        instantReplay60Button.setPosition(x, (tableHeight + 1) * LINE_HEIGHT);
+        x += instantReplay60Button.getWidth() + 4;
+        instantReplay30Button.setPosition(x, (tableHeight + 1) * LINE_HEIGHT);
+        x += instantReplay30Button.getWidth() + 4;
+        instantReplay15Button.setPosition(x, (tableHeight + 1) * LINE_HEIGHT);
 
-    public void setLiveTimingTableModel(LiveTimingTableModel model) {
-        table.setTableModel(model);
-        invalidate();
+        x = 862;
+        instantReplayBackTextField.setPosition(x, (tableHeight + 2) * LINE_HEIGHT);
+        x += instantReplayBackTextField.getWidth() + 5;
+        instantReplayCustomLabel.setPosition(x, (tableHeight + 2) * LINE_HEIGHT);
+        x += instantReplayCustomLabel.getWidth();
+        instantReplayDurationTextField.setPosition(x, (tableHeight + 2) * LINE_HEIGHT);
+        x += instantReplayDurationTextField.getWidth() + 5;
+        instantReplayDurationLabel.setPosition(x, (tableHeight + 2) * LINE_HEIGHT);
+        x += instantReplayDurationLabel.getWidth();
+        instantReplayCustomButton.setPosition(x, (tableHeight + 2) * LINE_HEIGHT);
     }
 
     public void setCameraSets(Map<String, List<String>> sets) {
