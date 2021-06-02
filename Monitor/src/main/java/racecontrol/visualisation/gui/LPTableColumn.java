@@ -11,6 +11,7 @@ import static processing.core.PConstants.CENTER;
 import static processing.core.PConstants.LEFT;
 import static processing.core.PConstants.RIGHT;
 import processing.core.PFont;
+import racecontrol.visualisation.gui.LPTable.RenderContext;
 
 /**
  *
@@ -43,12 +44,7 @@ public class LPTableColumn {
 
     private LPTable.CellRenderer renderer = (
             PApplet applet,
-            Object object,
-            boolean isSelected,
-            boolean isMouseOverRow,
-            boolean isMouseOverColumn,
-            float width,
-            float height) -> {
+            RenderContext context) -> {
         applet.fill(255);
         applet.textAlign(textAlign, CENTER);
         if (font != null) {
@@ -58,13 +54,13 @@ public class LPTableColumn {
         }
         switch (textAlign) {
             case LEFT:
-                applet.text(object.toString(), height / 2, height / 2);
+                applet.text(context.object.toString(), context.height / 2, context.height / 2);
                 break;
             case CENTER:
-                applet.text(object.toString(), width / 2, height / 2);
+                applet.text(context.object.toString(), context.width / 2, context.height / 2);
                 break;
             case RIGHT:
-                applet.text(object.toString(), width - height / 2, height / 2);
+                applet.text(context.object.toString(), context.width - context.height / 2, context.height / 2);
                 break;
         }
 

@@ -21,6 +21,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 import processing.core.PApplet;
 import static processing.core.PConstants.CENTER;
+import racecontrol.visualisation.gui.LPTable.RenderContext;
 
 /**
  *
@@ -107,13 +108,8 @@ public class QualifyingTableModel
 
     private final LPTable.CellRenderer bestLapRenderer = (
             PApplet applet,
-            Object object,
-            boolean isSelected,
-            boolean isMouseOverRow,
-            boolean isMouseOverColumn,
-            float width,
-            float height) -> {
-        CarInfo car = ((LiveTimingEntry) object).getCarInfo();
+            RenderContext context) -> {
+        CarInfo car = ((LiveTimingEntry) context.object).getCarInfo();
         int bestLapTime = car.getRealtime().getBestSessionLap().getLapTimeMS();
         String text = "--";
         if (bestLapTime != Integer.MAX_VALUE) {
@@ -127,18 +123,13 @@ public class QualifyingTableModel
         }
         applet.textAlign(CENTER, CENTER);
         applet.textFont(LookAndFeel.fontRegular());
-        applet.text(text, width / 2, height / 2);
+        applet.text(text, context.width / 2, context.height / 2);
     };
 
     private final LPTable.CellRenderer gapRenderer = (
             PApplet applet,
-            Object object,
-            boolean isSelected,
-            boolean isMouseOverRow,
-            boolean isMouseOverColumn,
-            float width,
-            float height) -> {
-        CarInfo car = ((LiveTimingEntry) object).getCarInfo();
+            RenderContext context) -> {
+        CarInfo car = ((LiveTimingEntry) context.object).getCarInfo();
         int bestLapTime = car.getRealtime().getBestSessionLap().getLapTimeMS();
         String text = "--";
         if (bestLapTime != Integer.MAX_VALUE) {
@@ -153,18 +144,13 @@ public class QualifyingTableModel
         applet.fill(COLOR_WHITE);
         applet.textAlign(CENTER, CENTER);
         applet.textFont(LookAndFeel.fontRegular());
-        applet.text(text, width / 2, height / 2);
+        applet.text(text, context.width / 2, context.height / 2);
     };
 
     private final LPTable.CellRenderer lapTimeRenderer = (
             PApplet applet,
-            Object object,
-            boolean isSelected,
-            boolean isMouseOverRow,
-            boolean isMouseOverColumn,
-            float width,
-            float height) -> {
-        CarInfo car = ((LiveTimingEntry) object).getCarInfo();
+            RenderContext context) -> {
+        CarInfo car = ((LiveTimingEntry) context.object).getCarInfo();
         LapInfo currentLap = car.getRealtime().getCurrentLap();
         String text = "--";
         applet.fill(COLOR_WHITE);
@@ -180,18 +166,13 @@ public class QualifyingTableModel
         }
         applet.textAlign(CENTER, CENTER);
         applet.textFont(LookAndFeel.fontRegular());
-        applet.text(text, width / 2, height / 2);
+        applet.text(text, context.width / 2, context.height / 2);
     };
 
     private final LPTable.CellRenderer deltaRenderer = (
             PApplet applet,
-            Object object,
-            boolean isSelected,
-            boolean isMouseOverRow,
-            boolean isMouseOverColumn,
-            float width,
-            float height) -> {
-        CarInfo car = ((LiveTimingEntry) object).getCarInfo();
+            RenderContext context) -> {
+        CarInfo car = ((LiveTimingEntry) context.object).getCarInfo();
         LapInfo currentLap = car.getRealtime().getCurrentLap();
 
         String text = "--";
@@ -206,18 +187,13 @@ public class QualifyingTableModel
         }
         applet.textAlign(CENTER, CENTER);
         applet.textFont(LookAndFeel.fontRegular());
-        applet.text(text, width / 2, height / 2);
+        applet.text(text, context.width / 2, context.height / 2);
     };
 
     private final LPTable.CellRenderer sectorRenderer = (
             PApplet applet,
-            Object object,
-            boolean isSelected,
-            boolean isMouseOverRow,
-            boolean isMouseOverColumn,
-            float width,
-            float height) -> {
-        Tuple input = (Tuple) object;
+            RenderContext context) -> {
+        Tuple input = (Tuple) context.object;
         int sectorIndex = (int) input.right;
         List<Integer> splits = ((LapInfo) input.left).getSplits();
 
@@ -233,22 +209,17 @@ public class QualifyingTableModel
         }
         applet.textAlign(CENTER, CENTER);
         applet.textFont(LookAndFeel.fontRegular());
-        applet.text(text, width / 2, height / 2);
+        applet.text(text, context.width / 2, context.height / 2);
     };
 
     private final LPTable.CellRenderer lapsRenderer = (
             PApplet applet,
-            Object object,
-            boolean isSelected,
-            boolean isMouseOverRow,
-            boolean isMouseOverColumn,
-            float width,
-            float height) -> {
-        CarInfo car = ((LiveTimingEntry) object).getCarInfo();
+            RenderContext context) -> {
+        CarInfo car = ((LiveTimingEntry) context.object).getCarInfo();
         applet.textAlign(CENTER, CENTER);
         applet.textFont(LookAndFeel.fontRegular());
         applet.fill(COLOR_WHITE);
-        applet.text(String.valueOf(car.getRealtime().getLaps()), width / 2, height / 2);
+        applet.text(String.valueOf(car.getRealtime().getLaps()), context.width / 2, context.height / 2);
     };
 
 }

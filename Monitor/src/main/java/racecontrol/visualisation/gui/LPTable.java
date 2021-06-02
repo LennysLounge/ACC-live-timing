@@ -178,12 +178,14 @@ public class LPTable extends LPContainer {
                 }
                 applet.translate(columnOffset, rowOffset);
                 columns[column].getRenderer().render(applet,
-                        model.getValueAt(column, row + scrollbar.scroll),
-                        isSelectedRow,
-                        isMouseOverThisRow,
-                        isMouseOverThisColumn,
-                        columnWidths[column],
-                        rowHeight);
+                        new RenderContext(model.getValueAt(column, row + scrollbar.scroll),
+                                isSelectedRow,
+                                isMouseOverThisRow,
+                                isMouseOverThisColumn,
+                                row % 2 == 0,
+                                columnWidths[column],
+                                rowHeight)
+                );
                 applet.translate(-columnOffset, -rowOffset);
                 columnOffset += columnWidths[column];
             }
@@ -464,12 +466,33 @@ public class LPTable extends LPContainer {
     @FunctionalInterface
     public interface CellRenderer {
 
-        void render(PApplet applet,
-                Object object,
+        void render(PApplet applet, RenderContext context);
+    }
+
+    public class RenderContext {
+
+        public final Object object;
+        public final boolean isSelected;
+        public final boolean isMouseOverRow;
+        public final boolean isMouseOverColumn;
+        public final boolean isOdd;
+        public final float width;
+        public final float height;
+
+        public RenderContext(Object object,
                 boolean isSelected,
                 boolean isMouseOverRow,
                 boolean isMouseOverColumn,
+                boolean isOdd,
                 float width,
-                float height);
+                float height) {
+            this.object = object;
+            this.isSelected = isSelected;
+            this.isMouseOverRow = isMouseOverRow;
+            this.isMouseOverColumn = isMouseOverColumn;
+            this.isOdd = isOdd;
+            this.width = width;
+            this.height = height;
+        }
     }
 }

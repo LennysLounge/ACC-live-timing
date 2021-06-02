@@ -56,13 +56,8 @@ public class LiveTimingTableModel
 
     private final LPTable.CellRenderer positionRenderer = (
             PApplet applet,
-            Object object,
-            boolean isSelected,
-            boolean isMouseOverRow,
-            boolean isMouseOverColumn,
-            float width,
-            float height) -> {
-        LiveTimingEntry entry = (LiveTimingEntry) object;
+            LPTable.RenderContext context) -> {
+        LiveTimingEntry entry = (LiveTimingEntry) context.object;
 
         applet.noStroke();
         int bgColor = LookAndFeel.COLOR_RED;
@@ -72,12 +67,12 @@ public class LiveTimingTableModel
             fgColor = LookAndFeel.COLOR_BLACK;
         }
         applet.fill(bgColor);
-        applet.rect(1, 1, width - 2, height - 2);
+        applet.rect(1, 1, context.width - 2, context.height - 2);
         applet.fill(fgColor);
         applet.textAlign(CENTER, CENTER);
         applet.textFont(LookAndFeel.fontMedium());
         applet.text(String.valueOf(entry.getCarInfo().getRealtime().getPosition()),
-                width / 2f, height / 2f);
+                context.width / 2f, context.height / 2f);
     };
     /**
      * Column shows the position number.
@@ -89,27 +84,22 @@ public class LiveTimingTableModel
 
     private final LPTable.CellRenderer nameRenderer = (
             PApplet applet,
-            Object object,
-            boolean isSelected,
-            boolean isMouseOverRow,
-            boolean isMouseOverColumn,
-            float width,
-            float height) -> {
-        CarInfo car = ((LiveTimingEntry) object).getCarInfo();
+            LPTable.RenderContext context) -> {
+        CarInfo car = ((LiveTimingEntry) context.object).getCarInfo();
         String firstname = car.getDriver().getFirstName();
         String lastname = car.getDriver().getLastName();
         firstname = firstname.substring(0, Math.min(firstname.length(), 1));
         String name = String.format("%s. %s", firstname, lastname);
 
-        if (isMouseOverRow) {
+        if (context.isMouseOverRow) {
             applet.fill(COLOR_DARK_RED);
-            applet.rect(1, 1, width - 1, height - 2);
+            applet.rect(1, 1, context.width - 1, context.height - 2);
         }
 
         applet.fill(COLOR_WHITE);
         applet.textAlign(LEFT, CENTER);
         applet.textFont(LookAndFeel.fontMedium());
-        applet.text(name, height / 4f, height / 2f);
+        applet.text(name, context.height / 4f, context.height / 2f);
     };
 
     protected final LPTableColumn nameColumn = new LPTableColumn("Name")
@@ -119,26 +109,21 @@ public class LiveTimingTableModel
 
     private final LPTable.CellRenderer pitRenderer = (
             PApplet applet,
-            Object object,
-            boolean isSelected,
-            boolean isMouseOverRow,
-            boolean isMouseOverColumn,
-            float width,
-            float height) -> {
-        boolean isInPits = ((LiveTimingEntry) object).getCarInfo()
+            LPTable.RenderContext context) -> {
+        boolean isInPits = ((LiveTimingEntry) context.object).getCarInfo()
                 .getRealtime().getLocation() != CarLocation.TRACK;
-        if (isMouseOverRow) {
+        if (context.isMouseOverRow) {
             applet.fill(COLOR_DARK_RED);
-            applet.rect(0, 1, width - 1, height - 2);
+            applet.rect(0, 1, context.width - 1, context.height - 2);
         }
         if (isInPits) {
             applet.noStroke();
             applet.fill(LookAndFeel.COLOR_WHITE);
-            applet.rect(1, 1, width - 2, height - 2);
+            applet.rect(1, 1, context.width - 2, context.height - 2);
             applet.fill(0);
             applet.textAlign(CENTER, CENTER);
             applet.textSize(TEXT_SIZE * 0.6f);
-            applet.text("P", width / 2f, height / 2f);
+            applet.text("P", context.width / 2f, context.height / 2f);
             applet.textFont(LookAndFeel.fontMedium());
             applet.textSize(LookAndFeel.TEXT_SIZE);
         }
@@ -151,13 +136,8 @@ public class LiveTimingTableModel
 
     private final LPTable.CellRenderer carNumberRenderer = (
             PApplet applet,
-            Object object,
-            boolean isSelected,
-            boolean isMouseOverRow,
-            boolean isMouseOverColumn,
-            float width,
-            float height) -> {
-        CarInfo car = ((LiveTimingEntry) object).getCarInfo();
+            LPTable.RenderContext context) -> {
+        CarInfo car = ((LiveTimingEntry) context.object).getCarInfo();
 
         int backColor = 0;
         int frontColor = 0;
@@ -178,16 +158,16 @@ public class LiveTimingTableModel
         }
         applet.noStroke();
         applet.fill(backColor);
-        applet.rect(1, 1, width - 2, height - 2);
+        applet.rect(1, 1, context.width - 2, context.height - 2);
 
         //render GT4 / Cup / Super trofeo corners.
         CarType type = getCarType(car.getCarModelType());
         if (type != CarType.GT3) {
             applet.fill(COLOR_WHITE);
             applet.beginShape();
-            applet.vertex(width - 1, height - 1);
-            applet.vertex(width - 1, height - LINE_HEIGHT * 0.5f);
-            applet.vertex(width - LINE_HEIGHT * 0.5f, height - 1);
+            applet.vertex(context.width - 1, context.height - 1);
+            applet.vertex(context.width - 1, context.height - LINE_HEIGHT * 0.5f);
+            applet.vertex(context.width - LINE_HEIGHT * 0.5f, context.height - 1);
             applet.endShape(CLOSE);
             if (type == CarType.ST) {
                 applet.fill(COLOR_SUPER_TROFEO);
@@ -197,16 +177,16 @@ public class LiveTimingTableModel
                 applet.fill(COLOR_GT4);
             }
             applet.beginShape();
-            applet.vertex(width - 1, height - 1);
-            applet.vertex(width - 1, height - LINE_HEIGHT * 0.4f);
-            applet.vertex(width - LINE_HEIGHT * 0.4f, height - 1);
+            applet.vertex(context.width - 1, context.height - 1);
+            applet.vertex(context.width - 1, context.height - LINE_HEIGHT * 0.4f);
+            applet.vertex(context.width - LINE_HEIGHT * 0.4f, context.height - 1);
             applet.endShape(CLOSE);
         }
 
         applet.fill(frontColor);
         applet.textAlign(CENTER, CENTER);
         applet.textFont(LookAndFeel.fontMedium());
-        applet.text(String.valueOf(car.getCarNumber()), width / 2f, height / 2f);
+        applet.text(String.valueOf(car.getCarNumber()), context.width / 2f, context.height / 2f);
     };
 
     protected final LPTableColumn carNumberColumn = new LPTableColumn("#")
