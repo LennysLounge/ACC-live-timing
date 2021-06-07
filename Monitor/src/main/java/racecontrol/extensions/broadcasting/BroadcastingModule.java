@@ -8,6 +8,7 @@ package racecontrol.extensions.broadcasting;
 import racecontrol.client.AccBroadcastingClient;
 import racecontrol.client.extension.AccBroadcastingClientExtensionModule;
 import racecontrol.client.extension.AccClientExtension;
+import racecontrol.extensions.GeneralExtentionConfigPanel;
 import racecontrol.visualisation.gui.LPContainer;
 
 /**
@@ -19,7 +20,7 @@ public class BroadcastingModule
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return GeneralExtentionConfigPanel.getInstance().isBroadcastingEnabled();
     }
 
     @Override
