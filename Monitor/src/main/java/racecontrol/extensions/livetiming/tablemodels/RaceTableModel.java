@@ -37,17 +37,25 @@ public class RaceTableModel
             carNumberColumn,
             new LPTableColumn("Gap")
             .setCellRenderer(gapRenderer)
+            .setMinWidth(100)
             .setMaxWidth(150),
             new LPTableColumn("To Leader")
+            .setMinWidth(100)
+            .setPriority(-1)
             .setCellRenderer(gapToLeaderRenderer)
             .setMaxWidth(150),
             new LPTableColumn("Lap")
+            .setMinWidth(100)
+            .setPriority(-1)
             .setCellRenderer(lapTimeRenderer),
             new LPTableColumn("Last")
+            .setMinWidth(100)
             .setTextAlign(CENTER),
             new LPTableColumn("Best")
+            .setMinWidth(100)
             .setTextAlign(CENTER),
             new LPTableColumn("Laps")
+            .setMinWidth(70)
             .setTextAlign(CENTER)
         };
     }

@@ -22,7 +22,7 @@ public class LPTableColumn {
     /**
      * Header for this column.
      */
-    private String header;
+    private final String header;
     /**
      * Growthrate describes how fast it grows into the available space.
      */
@@ -39,8 +39,19 @@ public class LPTableColumn {
      * The font to use for this Column.
      */
     private PFont font = null;
-
+    /**
+     * Text align inside this column.
+     */
     private int textAlign = LEFT;
+    /**
+     * priority for this column. Columns with lower priority will get disabled
+     * first.
+     */
+    private int priority = 0;
+    /**
+     * True if the column is visible.
+     */
+    private boolean visible = true;
 
     private LPTable.CellRenderer renderer = (
             PApplet applet,
@@ -100,6 +111,16 @@ public class LPTableColumn {
         return this;
     }
 
+    public LPTableColumn setPriority(int priority) {
+        this.priority = priority;
+        return this;
+    }
+
+    public LPTableColumn setVisible(boolean visible) {
+        this.visible = visible;
+        return this;
+    }
+
     public String getHeader() {
         return header;
     }
@@ -126,6 +147,14 @@ public class LPTableColumn {
 
     public int getTextAlign() {
         return textAlign;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public boolean isVisible() {
+        return visible;
     }
 
 }

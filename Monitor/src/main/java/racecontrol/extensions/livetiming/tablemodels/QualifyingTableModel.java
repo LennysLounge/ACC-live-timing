@@ -43,20 +43,31 @@ public class QualifyingTableModel
             pitColumn,
             carNumberColumn,
             new LPTableColumn("Lap")
+            .setMinWidth(100)
             .setCellRenderer(lapTimeRenderer),
             new LPTableColumn("Delta")
+            .setMinWidth(100)
             .setCellRenderer(deltaRenderer),
             new LPTableColumn("Best")
+            .setMinWidth(100)
             .setCellRenderer(bestLapRenderer),
             new LPTableColumn("Gap")
+            .setMinWidth(100)
             .setCellRenderer(gapRenderer),
             new LPTableColumn("S1")
+            .setMinWidth(100)
+            .setPriority(-1)
             .setCellRenderer(sectorRenderer),
             new LPTableColumn("S2")
+            .setMinWidth(100)
+            .setPriority(-1)
             .setCellRenderer(sectorRenderer),
             new LPTableColumn("S3")
+            .setMinWidth(100)
+            .setPriority(-1)
             .setCellRenderer(sectorRenderer),
             new LPTableColumn("Laps")
+            .setMinWidth(100)
             .setCellRenderer(lapsRenderer)
         };
     }
@@ -201,7 +212,7 @@ public class QualifyingTableModel
         applet.fill(COLOR_WHITE);
         if (sectorIndex < splits.size()) {
             if (splits.get(sectorIndex) != Integer.MAX_VALUE) {
-                text = TimeUtils.asLapTime(splits.get(sectorIndex));
+                text = TimeUtils.asSeconds(splits.get(sectorIndex));
                 if (Objects.equals(splits.get(sectorIndex), getSessionBestSectors().get(sectorIndex))) {
                     applet.fill(COLOR_PURPLE);
                 }

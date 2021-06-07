@@ -51,7 +51,7 @@ public class LPTable extends LPContainer {
     /**
      * container class for scrollbar fields.
      */
-    private Scrollbar scrollbar = new Scrollbar();
+    private final Scrollbar scrollbar = new Scrollbar();
     /**
      * Amount of table rows visible.
      */
@@ -130,6 +130,9 @@ public class LPTable extends LPContainer {
             applet.fill(LookAndFeel.COLOR_MEDIUM_DARK_GRAY);
             applet.rect(columnOffset, 0, getWidth() - columnOffset, rowHeight);
             for (int i = 0; i < columns.length; i++) {
+                if (!columns[i].isVisible()) {
+                    continue;
+                }
                 if (clickableColumnHeaders
                         && mouseOverColumn == i
                         && mouseOverRow == 0) {
@@ -172,10 +175,14 @@ public class LPTable extends LPContainer {
                 applet.rect(columnOffset, (int) rowOffset, getWidth() - columnOffset, (int) rowHeight);
             }
             for (int column = 0; column < columns.length; column++) {
-                boolean isMouseOverThisColumn = column == mouseOverColumn;
+                if (!columns[column].isVisible()) {
+                    continue;
+                }
                 if (row + scrollbar.scroll >= model.getRowCount()) {
                     continue;
                 }
+
+                boolean isMouseOverThisColumn = column == mouseOverColumn;
                 applet.translate(columnOffset, rowOffset);
                 columns[column].getRenderer().render(applet,
                         new RenderContext(model.getValueAt(column, row + scrollbar.scroll),
@@ -355,42 +362,70 @@ public class LPTable extends LPContainer {
     }
 
     private float[] calculateColumnWidths(LPTableColumn[] columns, float totalWidth) {
+        //final widths for the columns.
         float[] widths = new float[columns.length];
-        int[] needToCalculateWidthForIndex = new int[columns.length];
-        float width = totalWidth;
-        float growthSum = 0;
-        for (int i = 0; i < columns.length; i++) {
-            growthSum += columns[i].getGrowthRate();
-            needToCalculateWidthForIndex[i] = i;
+        boolean[] isCalculationForIndexDone = new boolean[columns.length];
+
+        //First find the absolute minimum width required for all columns.
+        int minWidth = 0;
+        for (LPTableColumn c : columns) {
+            minWidth += c.getMinWidth();
+            c.setVisible(true);
+        }
+        //remove columns with the lowest priority until the minimum width is less
+        //than the totalWidth
+        while (minWidth > totalWidth) {
+            int lowestPriorityIndex = 0;
+            for (int i = 0; i < columns.length; i++) {
+                if (isCalculationForIndexDone[i]) {
+                    continue;
+                }
+                if (columns[i].getPriority() <= columns[lowestPriorityIndex].getPriority()) {
+                    lowestPriorityIndex = i;
+                }
+            }
+            columns[lowestPriorityIndex].setVisible(false);
+            minWidth -= columns[lowestPriorityIndex].getMinWidth();
+            isCalculationForIndexDone[lowestPriorityIndex] = true;
         }
 
+        //find the sum of the growth values for the remaining columns.
+        float availableWidth = totalWidth;
+        float growthSum = 0;
+        for (int i = 0; i < columns.length; i++) {
+            if (isCalculationForIndexDone[i]) {
+                continue;
+            }
+            growthSum += columns[i].getGrowthRate();
+        }
+
+        //calculate the width of the columns based on their growth values
+        //and the available space.
         boolean recalculate = true;
         while (recalculate) {
             recalculate = false;
-            float growthWidth = width / growthSum;
-            for (int i = 0; i < needToCalculateWidthForIndex.length; i++) {
-                int index = needToCalculateWidthForIndex[i];
-                if (index == -1) {
+            float growthWidth = availableWidth / growthSum;
+            for (int i = 0; i < columns.length; i++) {
+                if (isCalculationForIndexDone[i]) {
                     continue;
                 }
-                float columnWidth = growthWidth * columns[index].getGrowthRate();
-                //limit column to max and min values.
-                boolean toRemove = false;
-                if (columnWidth < columns[index].getMinWidth()) {
-                    columnWidth = columns[index].getMaxWidth();
-                    toRemove = true;
-                }
-                if (columnWidth > columns[index].getMaxWidth()) {
-                    columnWidth = columns[index].getMaxWidth();
-                    toRemove = true;
-                }
-                widths[index] = columnWidth;
-                if (toRemove) {
-                    growthSum -= columns[index].getGrowthRate();
-                    width -= columnWidth;
-                    needToCalculateWidthForIndex[i] = -1;
+
+                float columnWidth = growthWidth * columns[i].getGrowthRate();
+
+                //limit columns to their min and max sizes.
+                //when a row get limited, remove mark it as done and remove
+                //its size from the availbe width and recalculate all other rows.
+                if (columnWidth < columns[i].getMinWidth()
+                        || columnWidth > columns[i].getMaxWidth()) {
+                    columnWidth = Math.min(columns[i].getMaxWidth(), Math.max(columns[i].getMinWidth(), columnWidth));
+                    growthSum -= columns[i].getGrowthRate();
+                    availableWidth -= columnWidth;
+                    isCalculationForIndexDone[i] = true;
                     recalculate = true;
+                    widths[i] = columnWidth;
+                    break;
                 }
+                widths[i] = columnWidth;
             }
         }
         return widths;
