@@ -37,8 +37,8 @@ public class BroadcastingPanel
     private final LPContainer liveTimingPanel;
 
     private final LPLabel hudLabel = new LPLabel("HUD");
-    private final LPLabel carCameraLable = new LPLabel("Car Cameras");
-    private final LPLabel tvCameraLable = new LPLabel("TV Cameras");
+    private final LPLabel cameraLable = new LPLabel("Camera");
+    private final LPLabel cameraExtraLable = new LPLabel("--");
 
     private final Map<String, LPButton> hudButtons = new LinkedHashMap<>();
     private final Map<String, Map<String, LPButton>> cameraButtonsRef = new HashMap<>();
@@ -53,27 +53,27 @@ public class BroadcastingPanel
     private final LPLabel instantReplayCustomLabel = new LPLabel("seconds back, for");
     private final LPTextField instantReplayDurationTextField = new LPTextField();
     private final LPLabel instantReplayDurationLabel = new LPLabel("seconds.");
-    private final LPButton instantReplayCustomButton = new LPButton("Custom");
+    private final LPButton instantReplayCustomButton = new LPButton("Go");
 
     public BroadcastingPanel(BroadcastingExtension extension,
             LPContainer liveTimingPanel) {
         this.extension = extension;
         this.liveTimingPanel = liveTimingPanel;
-        
+
         setName("BROADCASTING");
 
         addComponent(liveTimingPanel);
 
         hudLabel.setSize(200, LINE_HEIGHT);
         addComponent(hudLabel);
-        carCameraLable.setSize(200, LINE_HEIGHT);
-        addComponent(carCameraLable);
-        tvCameraLable.setSize(200, LINE_HEIGHT);
-        addComponent(tvCameraLable);
+        cameraLable.setSize(100, LINE_HEIGHT);
+        addComponent(cameraLable);
+        cameraExtraLable.setSize(200, LINE_HEIGHT);
+        addComponent(cameraExtraLable);
         //addComponent(replayLabel);
 
-        addHUDButton("Blank", "Blank");
         addHUDButton("Basic", "Basic HUD");
+        addHUDButton("Blank", "Blank");
         //addHUDButton("Help", "Help");
         addHUDButton("Times", "TimeTable");
         addHUDButton("BC", "Broadcasting");
@@ -82,14 +82,14 @@ public class BroadcastingPanel
         addCarCameraButton("Bumper", "Drivable", "DashPro");
         addCarCameraButton("Bonnet", "Drivable", "Bonnet");
         addCarCameraButton("Wing", "Onboard", "Onboard3");
-        addCarCameraButton("Dash", "Drivable", "Dash");
-        addCarCameraButton("Cockpit", "Drivable", "Cockpit");
-        addCarCameraButton("Helmet", "Drivable", "Helmet");
+        //addCarCameraButton("Dash", "Drivable", "Dash");
+        //addCarCameraButton("Cockpit", "Drivable", "Cockpit");
+        //addCarCameraButton("Helmet", "Drivable", "Helmet");
         addCarCameraButton("Interior", "Onboard", "Onboard0");
         addCarCameraButton("Driver", "Onboard", "Onboard1");
         addCarCameraButton("Passenger", "Onboard", "Onboard2");
-        addCarCameraButton("Chase", "Drivable", "Chase");
-        addCarCameraButton("Far Chase", "Drivable", "FarChase");
+        //addCarCameraButton("Chase", "Drivable", "Chase");
+        //addCarCameraButton("Far Chase", "Drivable", "FarChase");
 
         instantReplayLabel.setSize(200, LINE_HEIGHT);
         addComponent(instantReplayLabel);
@@ -114,7 +114,7 @@ public class BroadcastingPanel
         addComponent(instantReplayDurationTextField);
         instantReplayDurationLabel.setSize(90, LINE_HEIGHT);
         addComponent(instantReplayDurationLabel);
-        instantReplayCustomButton.setSize(100, LINE_HEIGHT);
+        instantReplayCustomButton.setSize(78, LINE_HEIGHT);
         instantReplayCustomButton.setAction(() -> {
             try {
                 int seconds = Integer.parseInt(instantReplayBackTextField.getValue());
@@ -134,9 +134,8 @@ public class BroadcastingPanel
         liveTimingPanel.setSize(w, tableHeight * LINE_HEIGHT);
 
         hudLabel.setPosition(20, LINE_HEIGHT * tableHeight);
-        carCameraLable.setPosition(210, LINE_HEIGHT * tableHeight);
-        tvCameraLable.setPosition(210, LINE_HEIGHT * (tableHeight + 4));
-        instantReplayLabel.setPosition(870, LINE_HEIGHT * tableHeight);
+        cameraLable.setPosition(210, LINE_HEIGHT * tableHeight);
+        cameraExtraLable.setPosition(210 + cameraLable.getWidth(), LINE_HEIGHT * tableHeight);
 
         int x = 20;
         int y = 1;
@@ -147,6 +146,13 @@ public class BroadcastingPanel
 
         x = 210;
         y = 1;
+        for (LPButton button : tvCameraButtons) {
+            button.setPosition(x, (tableHeight + y) * LINE_HEIGHT);
+            y++;
+        }
+
+        x = 364;
+        y = 1;
         for (LPButton button : carCameraButtons) {
             button.setPosition(x, (tableHeight + y) * LINE_HEIGHT);
             y++;
@@ -156,29 +162,35 @@ public class BroadcastingPanel
             }
         }
 
-        x = 210;
-        y = 5;
-        for (LPButton button : tvCameraButtons) {
-            button.setPosition(x, (tableHeight + y) * LINE_HEIGHT);
-            x += button.getWidth() + 4;
+        if ((x + 516) > w) {
+            positionInstantReplayElements(210, tableHeight + 4);
+            instantReplayLabel.setVisible(false);
+        } else {
+            instantReplayLabel.setVisible(true);
+            instantReplayLabel.setPosition(x + 36, tableHeight * LINE_HEIGHT);
+            positionInstantReplayElements(x + 36, tableHeight + 1);
         }
-        x = 862;
-        instantReplay60Button.setPosition(x, (tableHeight + 1) * LINE_HEIGHT);
-        x += instantReplay60Button.getWidth() + 4;
-        instantReplay30Button.setPosition(x, (tableHeight + 1) * LINE_HEIGHT);
-        x += instantReplay30Button.getWidth() + 4;
-        instantReplay15Button.setPosition(x, (tableHeight + 1) * LINE_HEIGHT);
 
-        x = 862;
-        instantReplayBackTextField.setPosition(x, (tableHeight + 2) * LINE_HEIGHT);
+    }
+
+    private void positionInstantReplayElements(int X, int y) {
+        int x = X;
+        instantReplay60Button.setPosition(x, y * LINE_HEIGHT);
+        x += instantReplay60Button.getWidth() + 4;
+        instantReplay30Button.setPosition(x, y * LINE_HEIGHT);
+        x += instantReplay30Button.getWidth() + 4;
+        instantReplay15Button.setPosition(x, y * LINE_HEIGHT);
+
+        x = X;
+        instantReplayBackTextField.setPosition(x, (y + 1) * LINE_HEIGHT);
         x += instantReplayBackTextField.getWidth() + 5;
-        instantReplayCustomLabel.setPosition(x, (tableHeight + 2) * LINE_HEIGHT);
+        instantReplayCustomLabel.setPosition(x, (y + 1) * LINE_HEIGHT);
         x += instantReplayCustomLabel.getWidth();
-        instantReplayDurationTextField.setPosition(x, (tableHeight + 2) * LINE_HEIGHT);
+        instantReplayDurationTextField.setPosition(x, (y + 1) * LINE_HEIGHT);
         x += instantReplayDurationTextField.getWidth() + 5;
-        instantReplayDurationLabel.setPosition(x, (tableHeight + 2) * LINE_HEIGHT);
+        instantReplayDurationLabel.setPosition(x, (y + 1) * LINE_HEIGHT);
         x += instantReplayDurationLabel.getWidth();
-        instantReplayCustomButton.setPosition(x, (tableHeight + 2) * LINE_HEIGHT);
+        instantReplayCustomButton.setPosition(x, (y + 1) * LINE_HEIGHT);
     }
 
     public void setCameraSets(Map<String, List<String>> sets) {
@@ -188,8 +200,7 @@ public class BroadcastingPanel
             }
             if (camSet.equals("set2")
                     || camSet.equals("set1")
-                    || camSet.equals("Helicam")
-                    || camSet.equals("pitlane")) {
+                    || camSet.equals("Helicam")) {
                 String name = "";
                 if (camSet.equals("set1")) {
                     name = "TV 1";
@@ -233,11 +244,27 @@ public class BroadcastingPanel
     }
 
     public void setActiveCameraSet(String activeCameraSet, String activeCamera) {
+        //If the active camera is a pitlane camera we pretend like it is actuall
+        //a camera from set1.
+        if (activeCameraSet.equals("pitlane")) {
+            if (cameraButtonsRef.containsKey("set1")) {
+                if (cameraButtonsRef.get("set1").size() > 0) {
+                    activeCameraSet = "set1";
+                    activeCamera = cameraButtonsRef.get("set1").keySet().stream().findFirst().get();
+                }
+            }
+        }
+
         if (cameraButtonsRef.containsKey(activeCameraSet)) {
             cameraButtonsRef.values().forEach(
                     list -> list.values().forEach(button -> button.setEnabled(true))
             );
-            cameraButtonsRef.get(activeCameraSet).get(activeCamera).setEnabled(false);
+            if (cameraButtonsRef.get(activeCameraSet).containsKey(activeCamera)) {
+                cameraButtonsRef.get(activeCameraSet).get(activeCamera).setEnabled(false);
+                cameraExtraLable.setText("");
+            } else {
+                cameraExtraLable.setText(activeCameraSet + " - " + activeCamera);
+            }
         }
     }
 
