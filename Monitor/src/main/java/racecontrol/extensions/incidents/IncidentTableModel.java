@@ -22,6 +22,9 @@ import java.util.stream.Collectors;
 import processing.core.PApplet;
 import static processing.core.PConstants.CENTER;
 import static processing.core.PConstants.CLOSE;
+import static racecontrol.visualisation.LookAndFeel.COLOR_PRACTICE;
+import static racecontrol.visualisation.LookAndFeel.COLOR_QUALIFYING;
+import static racecontrol.visualisation.LookAndFeel.COLOR_RACE;
 
 /**
  *
@@ -29,22 +32,22 @@ import static processing.core.PConstants.CLOSE;
  */
 public class IncidentTableModel extends TableModel {
 
-    private final int MAX_CARS_PER_ROW = 4;
+    public static final int MAX_CARS_PER_ROW = 4;
 
     private List<IncidentEntry> incidents = new LinkedList<>();
 
     @Override
     public int getRowCount() {
         return incidents.stream()
-                .collect(Collectors.summingInt(entry -> entry.getIncident().getCars().size() / MAX_CARS_PER_ROW));
+                .collect(Collectors.summingInt(entry -> entry.getRows()));
     }
 
     @Override
     public LPTableColumn[] getColumns() {
         return new LPTableColumn[]{
             new LPTableColumn("#")
-            .setMaxWidth(LookAndFeel.LINE_HEIGHT)
-            .setMinWidth(LookAndFeel.LINE_HEIGHT),
+            .setMaxWidth(LINE_HEIGHT)
+            .setMinWidth(LINE_HEIGHT),
             new LPTableColumn("Session Time")
             .setMaxWidth(200)
             .setMinWidth(200),
@@ -52,11 +55,14 @@ public class IncidentTableModel extends TableModel {
             .setMaxWidth(200)
             .setMinWidth(200),
             new LPTableColumn("Cars Involved")
+            .setMinWidth(LINE_HEIGHT * 1.25f * MAX_CARS_PER_ROW)
+            .setMaxWidth(LINE_HEIGHT * 1.25f * MAX_CARS_PER_ROW)
             .setCellRenderer(carsRenderer),
+            new LPTableColumn("Replay"),
             new LPTableColumn("")
             .setMaxWidth(0)
             .setMinWidth(0)
-            .setCellRenderer(deviderRender)
+            .setCellRenderer(dividerRender)
         };
     }
 
@@ -78,8 +84,15 @@ public class IncidentTableModel extends TableModel {
         if (entry == null) {
             return null;
         }
-        if(subRow > 0 && column != 3){
+        if (subRow > 0 && column != 3) {
             return null;
+        }
+        if (entry.getDividerType() != IncidentEntry.Divider.NONE) {
+            if (column == 5) {
+                return entry.getDividerType();
+            } else {
+                return null;
+            }
         }
 
         IncidentInfo a = entry.getIncident();
@@ -162,10 +175,26 @@ public class IncidentTableModel extends TableModel {
         }
     };
 
-    private final LPTable.CellRenderer deviderRender = (
+    private final LPTable.CellRenderer dividerRender = (
             PApplet applet,
             LPTable.RenderContext context) -> {
-        int x = 12;
+        switch ((IncidentEntry.Divider) context.object) {
+            case PRACTICE:
+                applet.fill(COLOR_PRACTICE);
+                break;
+            case QUALIFYING:
+                applet.fill(COLOR_QUALIFYING);
+                break;
+            case RACE:
+                applet.fill(COLOR_RACE);
+                break;
+        }
+        applet.rect(-context.tablePosX + 1, 1, context.tableWidth - 2, context.height - 2);
+        applet.fill(0);
+        applet.textAlign(CENTER, CENTER);
+        applet.text(((IncidentEntry.Divider) context.object).name(),
+                -context.tablePosX + context.tableWidth / 2f,
+                context.height / 2f);
     };
 
     public void setAccidents(List<IncidentEntry> incidents) {

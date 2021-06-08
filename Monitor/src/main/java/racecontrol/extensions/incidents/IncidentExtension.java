@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
+import racecontrol.client.events.SessionChanged;
 
 /**
  *
@@ -107,6 +108,23 @@ public class IncidentExtension
             replayTimeKnown = true;
             panel.setReplayOffsetKnown();
             updateAccidentsWithReplayTime();
+        } else if (e instanceof SessionChanged) {
+            List<IncidentEntry> newAccidents = new LinkedList<>();
+            newAccidents.addAll(accidents);
+            switch (((SessionChanged) e).getSessionInfo().getSessionType()) {
+                case PRACTICE:
+                    newAccidents.add(new IncidentEntry(IncidentEntry.Divider.PRACTICE));
+                    break;
+                case QUALIFYING:
+                    newAccidents.add(new IncidentEntry(IncidentEntry.Divider.QUALIFYING));
+                    break;
+                case RACE:
+                    newAccidents.add(new IncidentEntry(IncidentEntry.Divider.RACE));
+                    break;
+            }
+            accidents = newAccidents;
+            model.setAccidents(accidents);
+            panel.invalidate();
         }
     }
 
@@ -172,15 +190,19 @@ public class IncidentExtension
         SessionId currentSessionId = getClient().getSessionId();
         List<IncidentEntry> newAccidents = new LinkedList<>();
         for (IncidentEntry incidentEntry : accidents) {
-            IncidentInfo incident = incidentEntry.getIncident();
-            if (incident.getSessionID().equals(currentSessionId)) {
-                newAccidents.add(
-                        new IncidentEntry(
-                                incident.withReplayTime(
-                                        replayOffsetExtension.getReplayTimeFromSessionTime((int) incident.getSessionEarliestTime())
-                                )
-                        )
-                );
+            if (incidentEntry.getDividerType() != IncidentEntry.Divider.NONE) {
+                newAccidents.add(incidentEntry);
+            } else {
+                IncidentInfo incident = incidentEntry.getIncident();
+                if (incident.getSessionID().equals(currentSessionId)) {
+                    newAccidents.add(
+                            new IncidentEntry(
+                                    incident.withReplayTime(
+                                            replayOffsetExtension.getReplayTimeFromSessionTime((int) incident.getSessionEarliestTime())
+                                    )
+                            )
+                    );
+                }
             }
         }
         accidents = newAccidents;

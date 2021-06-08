@@ -14,15 +14,21 @@ public class IncidentEntry {
 
     private final IncidentInfo incident;
     private final int rows;
-    private final Devider deviderType;
-
-    public IncidentEntry(IncidentInfo incident) {
-        this(incident, Devider.NONE);
+    private final Divider deviderType;
+    
+    public IncidentEntry(Divider deviderType){
+        this.incident = null;
+        this.rows = 1;
+        this.deviderType = deviderType;
     }
 
-    public IncidentEntry(IncidentInfo incident, Devider deviderType) {
+    public IncidentEntry(IncidentInfo incident) {
+        this(incident, Divider.NONE);
+    }
+
+    public IncidentEntry(IncidentInfo incident, Divider deviderType) {
         this.incident = incident;
-        this.rows = incident.getCars().size();
+        this.rows = (int) Math.ceil(incident.getCars().size() * 1f / IncidentTableModel.MAX_CARS_PER_ROW);
         this.deviderType = deviderType;
     }
 
@@ -34,11 +40,11 @@ public class IncidentEntry {
         return rows;
     }
 
-    public Devider getDeviderType() {
+    public Divider getDividerType() {
         return deviderType;
     }
 
-    public enum Devider {
+    public enum Divider {
         NONE,
         PRACTICE,
         QUALIFYING,
