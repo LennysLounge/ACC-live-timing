@@ -28,11 +28,11 @@ import static processing.core.PConstants.CLOSE;
  */
 public class IncidentTableModel extends TableModel {
 
-    private List<IncidentInfo> accidents = new LinkedList<>();
+    private List<IncidentEntry> incidents = new LinkedList<>();
 
     @Override
     public int getRowCount() {
-        return accidents.size();
+        return incidents.size();
     }
 
     @Override
@@ -48,16 +48,20 @@ public class IncidentTableModel extends TableModel {
             .setMaxWidth(200)
             .setMinWidth(200),
             new LPTableColumn("Cars Involved")
-            .setCellRenderer(carsRenderer)
+            .setCellRenderer(carsRenderer),
+            new LPTableColumn("")
+            .setMaxWidth(0)
+            .setMinWidth(0)
+            .setCellRenderer(deviderRender)
         };
     }
 
     @Override
     public Object getValueAt(int column, int row) {
-        IncidentInfo a = accidents.get(accidents.size() - row - 1);
+        IncidentInfo a = incidents.get(incidents.size() - row - 1).getIncident();
         switch (column) {
             case 0:
-                return String.valueOf(accidents.size() - row - 1);
+                return String.valueOf(incidents.size() - row - 1);
             case 1:
                 return TimeUtils.asDuration(a.getSessionEarliestTime());
             case 2:
@@ -132,8 +136,14 @@ public class IncidentTableModel extends TableModel {
         }
     };
 
-    public void setAccidents(List<IncidentInfo> accidents) {
-        this.accidents = accidents;
+    private final LPTable.CellRenderer deviderRender = (
+            PApplet applet,
+            LPTable.RenderContext context) -> {
+        int x = 12;
+    };
+
+    public void setAccidents(List<IncidentEntry> incidents) {
+        this.incidents = incidents;
     }
 
     private CarType getCarType(byte carModelId) {
@@ -156,6 +166,7 @@ public class IncidentTableModel extends TableModel {
                 return CarType.GT4;
             default:
                 return CarType.GT3;
+
         }
     }
 

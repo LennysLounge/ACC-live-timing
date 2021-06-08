@@ -50,7 +50,7 @@ public class IncidentExtension
     /**
      * List of accidents that have happened.
      */
-    private List<IncidentInfo> accidents = new LinkedList<>();
+    private List<IncidentEntry> accidents = new LinkedList<>();
     /**
      * Table model for the incident panel table.
      */
@@ -89,12 +89,6 @@ public class IncidentExtension
 
     public IncidentTableModel getTableModel() {
         return model;
-    }
-
-    public List<IncidentInfo> getAccidents() {
-        List<IncidentInfo> a = new LinkedList<>(accidents);
-        Collections.reverse(a);
-        return Collections.unmodifiableList(a);
     }
 
     @Override
@@ -164,9 +158,9 @@ public class IncidentExtension
     }
 
     private void commitAccident(IncidentInfo a) {
-        List<IncidentInfo> newAccidents = new LinkedList<>();
+        List<IncidentEntry> newAccidents = new LinkedList<>();
         newAccidents.addAll(accidents);
-        newAccidents.add(a);
+        newAccidents.add(new IncidentEntry(a));
         accidents = newAccidents;
         model.setAccidents(accidents);
 
@@ -176,12 +170,17 @@ public class IncidentExtension
 
     private void updateAccidentsWithReplayTime() {
         SessionId currentSessionId = getClient().getSessionId();
-        List<IncidentInfo> newAccidents = new LinkedList<>();
-        for (IncidentInfo incident : accidents) {
+        List<IncidentEntry> newAccidents = new LinkedList<>();
+        for (IncidentEntry incidentEntry : accidents) {
+            IncidentInfo incident = incidentEntry.getIncident();
             if (incident.getSessionID().equals(currentSessionId)) {
-                newAccidents.add(incident.withReplayTime(
-                        replayOffsetExtension.getReplayTimeFromSessionTime((int) incident.getSessionEarliestTime())
-                ));
+                newAccidents.add(
+                        new IncidentEntry(
+                                incident.withReplayTime(
+                                        replayOffsetExtension.getReplayTimeFromSessionTime((int) incident.getSessionEarliestTime())
+                                )
+                        )
+                );
             }
         }
         accidents = newAccidents;
