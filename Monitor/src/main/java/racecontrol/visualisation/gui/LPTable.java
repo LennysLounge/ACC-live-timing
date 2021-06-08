@@ -191,7 +191,12 @@ public class LPTable extends LPContainer {
                                 isMouseOverThisColumn,
                                 row % 2 == 0,
                                 columnWidths[column],
-                                rowHeight)
+                                rowHeight,
+                                getWidth()-scrollbar.width,
+                                getHeight(),
+                                columnOffset-scrollbar.width,
+                                rowOffset
+                        )
                 );
                 applet.translate(-columnOffset, -rowOffset);
                 columnOffset += columnWidths[column];
@@ -513,6 +518,10 @@ public class LPTable extends LPContainer {
         public final boolean isOdd;
         public final float width;
         public final float height;
+        public final float tableWidth;
+        public final float tableHeight;
+        public final float tablePosX;
+        public final float tablePosY;
 
         public RenderContext(Object object,
                 boolean isSelected,
@@ -520,7 +529,11 @@ public class LPTable extends LPContainer {
                 boolean isMouseOverColumn,
                 boolean isOdd,
                 float width,
-                float height) {
+                float height,
+                float tableWidth,
+                float tableHeight,
+                float tablePosX,
+                float tablePosY) {
             this.object = object;
             this.isSelected = isSelected;
             this.isMouseOverRow = isMouseOverRow;
@@ -528,6 +541,11 @@ public class LPTable extends LPContainer {
             this.isOdd = isOdd;
             this.width = width;
             this.height = height;
+            this.tableWidth = tableWidth;
+            this.tableHeight = tableHeight;
+            this.tablePosX = tablePosX;
+            this.tablePosY = tablePosY;
         }
+
     }
 }
