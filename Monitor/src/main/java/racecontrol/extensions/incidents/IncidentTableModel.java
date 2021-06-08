@@ -18,6 +18,7 @@ import racecontrol.visualisation.gui.LPTable;
 import racecontrol.visualisation.gui.TableModel;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 import processing.core.PApplet;
 import static processing.core.PConstants.CENTER;
 import static processing.core.PConstants.CLOSE;
@@ -28,11 +29,14 @@ import static processing.core.PConstants.CLOSE;
  */
 public class IncidentTableModel extends TableModel {
 
+    private final int MAX_CARS_PER_ROW = 4;
+
     private List<IncidentEntry> incidents = new LinkedList<>();
 
     @Override
     public int getRowCount() {
-        return incidents.size();
+        return incidents.stream()
+                .collect(Collectors.summingInt(entry -> entry.getIncident().getCars().size() / MAX_CARS_PER_ROW));
     }
 
     @Override
@@ -58,10 +62,30 @@ public class IncidentTableModel extends TableModel {
 
     @Override
     public Object getValueAt(int column, int row) {
-        IncidentInfo a = incidents.get(incidents.size() - row - 1).getIncident();
+        IncidentEntry entry = null;
+        int subRow = 0;
+        //find correct Entry
+        int rowCount = 0;
+        for (int i = 0; i < incidents.size(); i++) {
+            entry = incidents.get(i);
+            rowCount += entry.getRows();
+            subRow = entry.getRows() - (rowCount - row);
+            if (rowCount > row) {
+                break;
+            }
+        }
+
+        if (entry == null) {
+            return null;
+        }
+        if(subRow > 0 && column != 3){
+            return null;
+        }
+
+        IncidentInfo a = entry.getIncident();
         switch (column) {
             case 0:
-                return String.valueOf(incidents.size() - row - 1);
+                return String.valueOf(row);
             case 1:
                 return TimeUtils.asDuration(a.getSessionEarliestTime());
             case 2:
@@ -70,9 +94,11 @@ public class IncidentTableModel extends TableModel {
                 }
                 return "-";
             case 3:
-                return a.getCars();
+                int lower = MAX_CARS_PER_ROW * subRow;
+                int upper = Math.min(MAX_CARS_PER_ROW * (subRow + 1), a.getCars().size());
+                return a.getCars().subList(lower, upper);
         }
-        return "-";
+        return null;
     }
 
     private final LPTable.CellRenderer carsRenderer = (
