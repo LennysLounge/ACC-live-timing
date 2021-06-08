@@ -184,17 +184,22 @@ public class LPTable extends LPContainer {
 
                 boolean isMouseOverThisColumn = column == mouseOverColumn;
                 applet.translate(columnOffset, rowOffset);
-                columns[column].getRenderer().render(applet,
-                        new RenderContext(model.getValueAt(column, row + scrollbar.scroll),
+                CellRenderer renderer = columns[column].getRenderer();
+                Object value = model.getValueAt(column, row + scrollbar.scroll);
+                if(value == null){
+                    renderer = LPTableColumn.nullRenderer;
+                }
+                renderer.render(applet,
+                        new RenderContext(value,
                                 isSelectedRow,
                                 isMouseOverThisRow,
                                 isMouseOverThisColumn,
                                 row % 2 == 0,
                                 columnWidths[column],
                                 rowHeight,
-                                getWidth()-scrollbar.width,
+                                getWidth() - scrollbar.width,
                                 getHeight(),
-                                columnOffset-scrollbar.width,
+                                columnOffset - scrollbar.width,
                                 rowOffset
                         )
                 );
