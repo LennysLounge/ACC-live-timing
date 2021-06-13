@@ -5,6 +5,7 @@
  */
 package racecontrol.extensions.incidents;
 
+import java.util.Arrays;
 import racecontrol.client.data.CarInfo;
 import racecontrol.utility.TimeUtils;
 import racecontrol.visualisation.LookAndFeel;
@@ -18,13 +19,17 @@ import racecontrol.visualisation.gui.LPTable;
 import racecontrol.visualisation.gui.TableModel;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import processing.core.PApplet;
 import static processing.core.PConstants.CENTER;
 import static processing.core.PConstants.CLOSE;
+import static racecontrol.visualisation.LookAndFeel.COLOR_DARK_RED;
+import static racecontrol.visualisation.LookAndFeel.COLOR_GRAY;
 import static racecontrol.visualisation.LookAndFeel.COLOR_PRACTICE;
 import static racecontrol.visualisation.LookAndFeel.COLOR_QUALIFYING;
 import static racecontrol.visualisation.LookAndFeel.COLOR_RACE;
+import static racecontrol.visualisation.LookAndFeel.COLOR_RED;
 
 /**
  *
@@ -32,9 +37,17 @@ import static racecontrol.visualisation.LookAndFeel.COLOR_RACE;
  */
 public class IncidentTableModel extends TableModel {
 
+    public static final Logger LOG = Logger.getLogger(IncidentTableModel.class.getName());
+
     public static final int MAX_CARS_PER_ROW = 4;
 
     private List<IncidentEntry> incidents = new LinkedList<>();
+
+    private final IncidentExtension extension;
+
+    public IncidentTableModel(IncidentExtension extension) {
+        this.extension = extension;
+    }
 
     @Override
     public int getRowCount() {
@@ -58,7 +71,10 @@ public class IncidentTableModel extends TableModel {
             .setMinWidth(LINE_HEIGHT * 1.25f * MAX_CARS_PER_ROW)
             .setMaxWidth(LINE_HEIGHT * 1.25f * MAX_CARS_PER_ROW)
             .setCellRenderer(carsRenderer),
-            new LPTableColumn("Replay"),
+            new LPTableColumn("Replay")
+            .setMinWidth(LINE_HEIGHT * 6.5f)
+            .setMaxWidth(LINE_HEIGHT * 6.5f)
+            .setCellRenderer(replayButtonRenderer),
             new LPTableColumn("")
             .setMaxWidth(0)
             .setMinWidth(0)
@@ -110,8 +126,52 @@ public class IncidentTableModel extends TableModel {
                 int lower = MAX_CARS_PER_ROW * subRow;
                 int upper = Math.min(MAX_CARS_PER_ROW * (subRow + 1), a.getCars().size());
                 return a.getCars().subList(lower, upper);
+            case 4:
+                return "-";
         }
         return null;
+    }
+
+    @Override
+    public void onClick(int column, int row, int mouseX, int mouseY) {
+        IncidentEntry entry = null;
+        int subRow = 0;
+        //find correct Entry
+        int rowCount = 0;
+        for (int i = 0; i < incidents.size(); i++) {
+            entry = incidents.get(i);
+            rowCount += entry.getRows();
+            subRow = entry.getRows() - (rowCount - row);
+            if (rowCount > row) {
+                break;
+            }
+        }
+        if (entry == null) {
+            return;
+        }
+
+        if (column == 3) {
+            //Car column clicked
+            int index = (int) (mouseX / (LINE_HEIGHT * 1.25f)) + MAX_CARS_PER_ROW * subRow;
+            if (index >= entry.getIncident().getCars().size()) {
+                return;
+            }
+            extension.focusOnCar(entry.getIncident().getCars().get(index).getCarId());
+
+        } else if (column == 4 && subRow == 0) {
+            //replay column clicked on the first sub row.
+            int button = (int) Math.floor((mouseX - LINE_HEIGHT) / (LINE_HEIGHT * 1.5f));
+            if (button > 2 || button < 0) {
+                return;
+            }
+            int seconds = 20;
+            if (button == 1) {
+                seconds = 10;
+            } else if (button == 2) {
+                seconds = 5;
+            }
+            extension.startAccidentReplay(entry.getIncident(), seconds);
+        }
     }
 
     private final LPTable.CellRenderer carsRenderer = (
@@ -144,6 +204,18 @@ public class IncidentTableModel extends TableModel {
             applet.fill(background_color);
             applet.rect(x + 1, 1, w - 2, context.height - 2);
 
+            //draw outline if the mouse if over this car
+            if (context.isMouseOverColumn
+                    && context.isMouseOverRow
+                    && context.mouseX > x
+                    && context.mouseX < x + w) {
+                applet.fill(COLOR_DARK_RED);
+                applet.rect(x + 1, 1, w - 2, 3);
+                applet.rect(x + 1, context.height - 1, w - 2, -3);
+                applet.rect(x + 1, 1, 3, context.height - 2);
+                applet.rect(x + w - 1, 1, -3, context.height - 2);
+            }
+
             //render GT4 / Cup / Super trofeo corners.
             CarType type = getCarType(car.getCarModelType());
             if (type != CarType.GT3) {
@@ -172,6 +244,28 @@ public class IncidentTableModel extends TableModel {
             applet.textFont(LookAndFeel.fontMedium());
             applet.text(String.valueOf(carNumber), x + w / 2, context.height / 2f);
             x += w;
+        }
+    };
+
+    private final LPTable.CellRenderer replayButtonRenderer = (
+            PApplet applet,
+            LPTable.RenderContext context) -> {
+        int width = (int) (LINE_HEIGHT * 1.5f);
+        int x = LINE_HEIGHT;
+        for (String t : Arrays.asList("-20s", "-10s", "-5s")) {
+            if (context.isMouseOverColumn
+                    && context.isMouseOverRow
+                    && context.mouseX > x
+                    && context.mouseX < x + width) {
+                applet.fill(COLOR_RED);
+            } else {
+                applet.fill(COLOR_GRAY);
+            }
+            applet.rect(x + 1, 1, width - 2, context.height - 2);
+            applet.fill(COLOR_WHITE);
+            applet.textAlign(CENTER, CENTER);
+            applet.text(t, x + width / 2f, context.height / 2);
+            x += width;
         }
     };
 

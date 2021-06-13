@@ -10,7 +10,6 @@ import racecontrol.client.events.AfterPacketReceived;
 import racecontrol.client.events.BroadcastingEventEvent;
 import racecontrol.eventbus.Event;
 import racecontrol.eventbus.EventBus;
-import racecontrol.eventbus.EventListener;
 import racecontrol.client.extension.AccClientExtension;
 import racecontrol.extensions.GeneralExtentionConfigPanel;
 import racecontrol.extensions.logging.LoggingExtension;
@@ -23,10 +22,10 @@ import racecontrol.extensions.replayoffset.ReplayOffsetExtension;
 import racecontrol.extensions.replayoffset.ReplayStart;
 import racecontrol.client.AccBroadcastingClient;
 import racecontrol.visualisation.gui.LPContainer;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
+import racecontrol.client.data.CarInfo;
 import racecontrol.client.events.SessionChanged;
 
 /**
@@ -55,7 +54,7 @@ public class IncidentExtension
     /**
      * Table model for the incident panel table.
      */
-    private final IncidentTableModel model = new IncidentTableModel();
+    private final IncidentTableModel model;
     /**
      * Flag indicates that the replay offset is known.
      */
@@ -71,9 +70,11 @@ public class IncidentExtension
 
     public IncidentExtension(AccBroadcastingClient client) {
         super(client);
+        this.model = new IncidentTableModel(this);
         this.panel = new IncidentPanel(this);
         loggingExtension = client.getOrCreateExtension(LoggingExtension.class);
         replayOffsetExtension = client.getOrCreateExtension(ReplayOffsetExtension.class);
+
     }
 
     @Override
@@ -218,6 +219,53 @@ public class IncidentExtension
 
     public void findReplayOffset() {
         replayOffsetExtension.findSessionChange();
+    }
+
+    public void createDummyIncident() {
+        if (getClient().getModel().getCarsInfo().isEmpty()) {
+            return;
+        }
+        LOG.info("Create dummy accident.");
+        int nCars = (int) Math.floor(Math.random() * Math.min(6, getClient().getModel().getCarsInfo().size()) + 1);
+        float sessionTime = getClient().getModel().getSessionInfo().getSessionTime();
+        IncidentInfo incident = new IncidentInfo(
+                sessionTime,
+                replayOffsetExtension.getReplayTimeFromSessionTime((int) sessionTime),
+                getClient().getSessionId());
+        for (int i = 0; i < nCars; i++) {
+            incident = incident.addCar(
+                    sessionTime,
+                    getRandomCar(),
+                    0);
+        }
+        commitAccident(incident);
+    }
+
+    private CarInfo getRandomCar() {
+        int r = (int) Math.floor(Math.random() * getClient().getModel().getCarsInfo().size());
+        int i = 0;
+        for (CarInfo car : getClient().getModel().getCarsInfo().values()) {
+            if (i++ == r) {
+                return car;
+            }
+        }
+        return null;
+    }
+
+    public void focusOnCar(int carId) {
+        LOG.info("Setting focus on car " + carId);
+        getClient().sendChangeFocusRequest(carId);
+    }
+
+    public void startAccidentReplay(IncidentInfo incident, int seconds) {
+        LOG.info("Starting instant replay for incident for " + seconds);
+        getClient().sendInstantReplayRequestWithCamera(
+                incident.getSessionEarliestTime() - seconds * 1000f - 5000,
+                seconds + 5,
+                getClient().getModel().getSessionInfo().getFocusedCarIndex(),
+                getClient().getModel().getSessionInfo().getActiveCameraSet(),
+                getClient().getModel().getSessionInfo().getActiveCamera()
+        );
     }
 
 }
