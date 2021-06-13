@@ -37,12 +37,25 @@ import static racecontrol.visualisation.LookAndFeel.COLOR_RED;
  */
 public class IncidentTableModel extends TableModel {
 
+    /**
+     * This class's logger.
+     */
     public static final Logger LOG = Logger.getLogger(IncidentTableModel.class.getName());
-
+    /**
+     * Maximum cars per row.
+     */
     public static final int MAX_CARS_PER_ROW = 4;
-
+    /**
+     * List of incident entries to display.
+     */
     private List<IncidentEntry> incidents = new LinkedList<>();
-
+    /**
+     * List of cars that are currently connected.
+     */
+    private List<Integer> currentlyConnectedCars;
+    /**
+     * Reference to the base extension object.
+     */
     private final IncidentExtension extension;
 
     public IncidentTableModel(IncidentExtension extension) {
@@ -204,16 +217,18 @@ public class IncidentTableModel extends TableModel {
             applet.fill(background_color);
             applet.rect(x + 1, 1, w - 2, context.height - 2);
 
-            //draw outline if the mouse if over this car
-            if (context.isMouseOverColumn
-                    && context.isMouseOverRow
-                    && context.mouseX > x
-                    && context.mouseX < x + w) {
-                applet.fill(COLOR_DARK_RED);
-                applet.rect(x + 1, 1, w - 2, 3);
-                applet.rect(x + 1, context.height - 1, w - 2, -3);
-                applet.rect(x + 1, 1, 3, context.height - 2);
-                applet.rect(x + w - 1, 1, -3, context.height - 2);
+            if (currentlyConnectedCars.contains(car.getCarId())) {
+                //draw outline if the mouse if over this car
+                if (context.isMouseOverColumn
+                        && context.isMouseOverRow
+                        && context.mouseX > x
+                        && context.mouseX < x + w) {
+                    applet.fill(COLOR_DARK_RED);
+                    applet.rect(x + 1, 1, w - 2, 3);
+                    applet.rect(x + 1, context.height - 1, w - 2, -3);
+                    applet.rect(x + 1, 1, 3, context.height - 2);
+                    applet.rect(x + w - 1, 1, -3, context.height - 2);
+                }
             }
 
             //render GT4 / Cup / Super trofeo corners.
@@ -243,6 +258,13 @@ public class IncidentTableModel extends TableModel {
             applet.textAlign(CENTER, CENTER);
             applet.textFont(LookAndFeel.fontMedium());
             applet.text(String.valueOf(carNumber), x + w / 2, context.height / 2f);
+
+            //Draw car number darker if this car is not connected.
+            if (!currentlyConnectedCars.contains(car.getCarId())) {
+                applet.fill(0, 0, 0, 150);
+                applet.rect(x + 1, 1, w - 2, context.height - 2);
+            }
+
             x += w;
         }
     };
@@ -293,6 +315,10 @@ public class IncidentTableModel extends TableModel {
 
     public void setAccidents(List<IncidentEntry> incidents) {
         this.incidents = incidents;
+    }
+
+    public void setConnectedCars(List<Integer> connectedCars) {
+        this.currentlyConnectedCars = connectedCars;
     }
 
     private CarType getCarType(byte carModelId) {

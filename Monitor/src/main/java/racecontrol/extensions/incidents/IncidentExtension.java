@@ -26,6 +26,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 import racecontrol.client.data.CarInfo;
+import racecontrol.client.events.RealtimeUpdate;
 import racecontrol.client.events.SessionChanged;
 
 /**
@@ -126,6 +127,9 @@ public class IncidentExtension
             accidents = newAccidents;
             model.setAccidents(accidents);
             panel.invalidate();
+        } else if (e instanceof RealtimeUpdate) {
+            //create a list of all currently connected cars at tell the model about it.
+            model.setConnectedCars(new LinkedList<>(getClient().getModel().getCarsInfo().keySet()));
         }
     }
 
