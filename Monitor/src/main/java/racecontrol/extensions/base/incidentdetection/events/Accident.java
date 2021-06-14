@@ -3,10 +3,10 @@
  * 
  * For licensing information see the included license (LICENSE.txt)
  */
-package racecontrol.extensions.incidents.events;
+package racecontrol.extensions.base.incidentdetection.events;
 
 import racecontrol.eventbus.Event;
-import racecontrol.extensions.incidents.IncidentInfo;
+import racecontrol.extensions.base.incidentdetection.IncidentInfo;
 
 /**
  *

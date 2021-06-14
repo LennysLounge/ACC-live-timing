@@ -5,7 +5,7 @@
  */
 package racecontrol.extensions.results;
 
-import racecontrol.extensions.incidents.IncidentInfo;
+import racecontrol.extensions.base.incidentdetection.IncidentInfo;
 import racecontrol.client.data.BroadcastingEvent;
 import java.util.LinkedList;
 import java.util.List;

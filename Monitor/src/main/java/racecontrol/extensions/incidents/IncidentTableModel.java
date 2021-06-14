@@ -5,6 +5,7 @@
  */
 package racecontrol.extensions.incidents;
 
+import racecontrol.extensions.base.incidentdetection.IncidentInfo;
 import java.util.Arrays;
 import racecontrol.client.data.CarInfo;
 import racecontrol.utility.TimeUtils;

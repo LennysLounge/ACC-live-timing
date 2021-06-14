@@ -3,7 +3,7 @@
  * 
  * For licensing information see the included license (LICENSE.txt)
  */
-package racecontrol.extensions.incidents;
+package racecontrol.extensions.base.incidentdetection;
 
 import racecontrol.client.data.SessionId;
 import racecontrol.client.data.CarInfo;

@@ -5,6 +5,8 @@
  */
 package racecontrol.extensions.incidents;
 
+import racecontrol.extensions.base.incidentdetection.IncidentInfo;
+
 /**
  * Represent an entry into the incident table model.
  *

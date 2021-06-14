@@ -9,7 +9,7 @@ import racecontrol.eventbus.Event;
 import racecontrol.eventbus.EventBus;
 import racecontrol.eventbus.EventListener;
 import racecontrol.client.extension.AccClientExtension;
-import racecontrol.extensions.incidents.events.Accident;
+import racecontrol.extensions.base.incidentdetection.events.Accident;
 import racecontrol.client.events.BroadcastingEventEvent;
 import racecontrol.client.data.SessionId;
 import racecontrol.client.data.BroadcastingEvent;

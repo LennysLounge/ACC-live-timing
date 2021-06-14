@@ -34,12 +34,12 @@ public class IncidentPanel extends LPContainer {
 
     private boolean showFirstLine = true;
 
-    public IncidentPanel(IncidentExtension extension) {
+    public IncidentPanel(IncidentExtension extension, IncidentTableModel tableModel) {
         this.extension = extension;
         setName("INCIDENTS");
 
         table.setOverdrawForLastLine(true);
-        table.setTableModel(extension.getTableModel());
+        table.setTableModel(tableModel);
         addComponent(table);
         replayOffsetLabel.setPosition(20, 0);
         replayOffsetLabel.setSize(280, LINE_HEIGHT);
@@ -60,10 +60,10 @@ public class IncidentPanel extends LPContainer {
         table.setPosition(0, y);
         table.setSize(w, h - y);
     }
-    
+
     @Override
     public void onKeyPressed(KeyEvent event) {
-        if(event.getKey() == 'k'){
+        if (event.getKey() == 'k') {
             extension.createDummyIncident();
         }
     }
