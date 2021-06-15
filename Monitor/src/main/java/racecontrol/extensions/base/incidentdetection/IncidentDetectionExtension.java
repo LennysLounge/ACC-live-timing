@@ -19,7 +19,7 @@ import racecontrol.eventbus.Event;
 import racecontrol.eventbus.EventBus;
 import racecontrol.extensions.base.incidentdetection.events.Accident;
 import racecontrol.extensions.logging.LoggingExtension;
-import racecontrol.extensions.replayoffset.ReplayOffsetExtension;
+import racecontrol.extensions.base.replayoffset.ReplayOffsetExtension;
 import racecontrol.utility.TimeUtils;
 import racecontrol.visualisation.gui.LPContainer;
 

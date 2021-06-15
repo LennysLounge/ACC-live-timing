@@ -3,7 +3,7 @@
  * 
  * For licensing information see the included license (LICENSE.txt)
  */
-package racecontrol.extensions.replayoffset;
+package racecontrol.extensions.base.replayoffset;
 
 import racecontrol.client.AccBroadcastingClient;
 import racecontrol.client.extension.AccClientExtension;

@@ -5,7 +5,7 @@
  */
 package racecontrol.visualisation.components;
 
-import racecontrol.extensions.replayoffset.ReplayOffsetExtension;
+import racecontrol.extensions.base.replayoffset.ReplayOffsetExtension;
 import racecontrol.client.data.SessionId;
 import racecontrol.client.AccBroadcastingClient;
 import racecontrol.utility.TimeUtils;

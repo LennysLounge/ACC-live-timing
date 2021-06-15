@@ -3,7 +3,7 @@
  * 
  * For licensing information see the included license (LICENSE.txt)
  */
-package racecontrol.extensions.replayoffset;
+package racecontrol.extensions.base.replayoffset.event;
 
 import racecontrol.eventbus.Event;
 

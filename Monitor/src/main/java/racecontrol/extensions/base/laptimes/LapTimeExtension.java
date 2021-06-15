@@ -3,7 +3,7 @@
  * 
  * For licensing information see the included license (LICENSE.txt)
  */
-package racecontrol.extensions.laptimes;
+package racecontrol.extensions.base.laptimes;
 
 import racecontrol.client.data.SessionId;
 import racecontrol.client.events.RealtimeCarUpdate;

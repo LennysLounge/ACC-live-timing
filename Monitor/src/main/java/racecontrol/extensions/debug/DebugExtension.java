@@ -9,7 +9,7 @@ import racecontrol.client.AccBroadcastingClient;
 import racecontrol.eventbus.EventBus;
 import racecontrol.client.extension.AccClientExtension;
 import racecontrol.eventbus.Event;
-import racecontrol.extensions.replayoffset.ReplayStart;
+import racecontrol.extensions.base.replayoffset.event.ReplayStart;
 import racecontrol.visualisation.gui.LPContainer;
 
 /**

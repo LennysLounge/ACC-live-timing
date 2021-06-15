@@ -3,7 +3,7 @@
  * 
  * For licensing information see the included license (LICENSE.txt)
  */
-package racecontrol.extensions.laptimes;
+package racecontrol.extensions.base.laptimes;
 
 import racecontrol.client.AccBroadcastingClient;
 import racecontrol.client.extension.AccClientExtension;
