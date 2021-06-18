@@ -1,7 +1,7 @@
-racecontrol.extensions.base.complexdata.ComplexDataModule
 racecontrol.extensions.base.incidentdetection.IncidentDetectionModule
 racecontrol.extensions.base.replayoffset.ReplayOffsetExtensionModule
 racecontrol.extensions.base.laptimes.LaptimeExtensionModule
+racecontrol.extensions.base.timing.TimingModule
 racecontrol.extensions.livetiming.LiveTimingExtensionModule
 racecontrol.extensions.incidents.IncidentExtensionModule
 racecontrol.extensions.logging.LoggingExtensionModule
