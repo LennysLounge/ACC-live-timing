@@ -20,6 +20,7 @@ public class TimingPanel
     private TimingExtension extension;
 
     public List<Float> rawRaceDistance = new LinkedList<>();
+    public List<Float> raceDistance = new LinkedList<>();
 
     public TimingPanel(TimingExtension extension) {
         this.extension = extension;
@@ -42,8 +43,8 @@ public class TimingPanel
         }
 
         applet.stroke(100);
-        for (int i = (int) Math.ceil(min); i < max; i++) {
-            float y = applet.map(i, min, max, 20, getHeight() - 20);
+        for (int i = (int) min; i < max; i++) {
+            float y = applet.map(i, min, max, getHeight() - 20, 20);
             applet.line(20, y, getWidth() - 20, y);
         }
 
@@ -51,8 +52,18 @@ public class TimingPanel
         applet.noFill();
         applet.beginShape();
         for (int i = 0; i < rawRaceDistance.size(); i++) {
-            float y = applet.map(rawRaceDistance.get(i), min, max, getHeight()-20, 20);
-            float x = applet.map(i, 0, rawRaceDistance.size()-1, 20, getWidth()-20);
+            float y = applet.map(rawRaceDistance.get(i), min, max, getHeight() - 20, 20);
+            float x = applet.map(i, 0, rawRaceDistance.size() - 1, 20, getWidth() - 20);
+            applet.vertex(x, y);
+        }
+        applet.endShape(OPEN);
+
+        applet.stroke(255, 255, 0);
+        applet.noFill();
+        applet.beginShape();
+        for (int i = 0; i < raceDistance.size(); i++) {
+            float y = applet.map(raceDistance.get(i), min, max, getHeight() - 20, 20);
+            float x = applet.map(i, 0, raceDistance.size() - 1, 20, getWidth() - 20);
             applet.vertex(x, y);
         }
         applet.endShape(OPEN);
